@@ -8,6 +8,6 @@ import java.time.LocalDate
 @Entity(tableName = "Shopping_Lists")
 data class ShoppingList(
     @PrimaryKey val id: Long,
-    val shoppingDate: LocalDate,
+    @ColumnInfo(name = "shopping_date") val shoppingDate: LocalDate,
     @ColumnInfo(name = "store_id") val storeId: Long
 )

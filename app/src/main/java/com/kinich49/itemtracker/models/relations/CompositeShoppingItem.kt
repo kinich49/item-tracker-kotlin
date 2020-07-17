@@ -1,0 +1,22 @@
+package com.kinich49.itemtracker.models.relations
+
+import androidx.room.ColumnInfo
+import androidx.room.DatabaseView
+import androidx.room.Embedded
+import com.kinich49.itemtracker.models.Brand
+import com.kinich49.itemtracker.models.Category
+import com.kinich49.itemtracker.models.ShoppingItem
+
+@DatabaseView(
+    "SELECT si.id as shopping_item_id, " +
+            "si.unit_price, si.currency, si.quantity, " +
+            "si.shopping_list_id " +
+            "FROM Shopping_Items as si "
+)
+data class CompositeShoppingItem(
+    @ColumnInfo(name = "id") val shoppingItemId: Long,
+    @ColumnInfo(name = "unit_price") val unitPrice: Long,
+    val currency: String,
+    val quantity: Double,
+    @ColumnInfo(name = "shopping_list_id") val shoppingLisId: Long
+)

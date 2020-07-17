@@ -9,6 +9,7 @@ data class ShoppingItem(
     @PrimaryKey val id: Long,
     val currency: String = "MXN",
     val quantity: Double,
-    val unitPrice: Int,
-    @ColumnInfo(name = "shopping_list_id") val shoppingListId: Long
+    @ColumnInfo(name = "unit_price") val unitPrice: Int,
+    @ColumnInfo(name = "shopping_list_id") val shoppingListId: Long,
+    @ColumnInfo(name = "item_id") val itemId: Long
 )
