@@ -12,10 +12,4 @@ data class CompositeShoppingList(
     @ColumnInfo(name = "shopping_list_id") val shoppingListId: Long,
     @ColumnInfo(name = "shopping_date") val shoppingDate: LocalDate,
     @Embedded(prefix = "store_") val store: Store
-//    @Relation(
-//        entity = ShoppingItem::class,
-//        parentColumn = "shopping_list_id",
-//        entityColumn = "shopping_list_id"
-//    )
-//    val shoppingItems: List<CompositeShoppingItem>
 )

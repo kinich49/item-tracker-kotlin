@@ -12,6 +12,11 @@ import androidx.room.PrimaryKey
             entity = Item::class,
             parentColumns = arrayOf("id"),
             childColumns = arrayOf("item_id")
+        ),
+        ForeignKey(
+            entity = ShoppingList::class,
+            parentColumns = arrayOf("id"),
+            childColumns = arrayOf("shopping_list_id")
         )]
 )
 data class ShoppingItem(
