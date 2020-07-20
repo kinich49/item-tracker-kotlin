@@ -17,7 +17,7 @@ import androidx.room.*
 )
 data class Item(
     @PrimaryKey val id: Long,
-    val name: String,
+    @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "brand_id") val brandId: Long,
     @ColumnInfo(name = "category_id") val categoryId: Long
 )
