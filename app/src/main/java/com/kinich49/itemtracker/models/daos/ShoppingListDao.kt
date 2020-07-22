@@ -30,4 +30,7 @@ interface ShoppingListDao {
 
     @Insert
     fun insert(shoppingList: ShoppingList)
+
+    @Insert
+    fun insert(vararg shoppingList: ShoppingList)
 }

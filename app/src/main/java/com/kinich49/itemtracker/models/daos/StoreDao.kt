@@ -13,4 +13,7 @@ interface StoreDao {
 
     @Insert
     fun insert(store: Store)
+
+    @Insert
+    fun insert(vararg store: Store)
 }

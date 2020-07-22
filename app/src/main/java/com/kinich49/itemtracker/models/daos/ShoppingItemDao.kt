@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.kinich49.itemtracker.models.ShoppingItem
 import com.kinich49.itemtracker.models.relations.CompositeShoppingItem
-import com.kinich49.itemtracker.models.relations.CompositeShoppingList
 
 @Dao
 interface ShoppingItemDao {
@@ -16,6 +15,9 @@ interface ShoppingItemDao {
 
     @Insert
     fun insert(shoppingItem: ShoppingItem)
+
+    @Insert
+    fun insert(vararg shoppingItem: ShoppingItem)
 
     @Query(
         "SELECT si.id, si.unit_price, si.currency, si.quantity, si.shopping_list_id," +

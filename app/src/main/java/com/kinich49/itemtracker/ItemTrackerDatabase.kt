@@ -36,9 +36,10 @@ abstract class ItemTrackerDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): ItemTrackerDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.inMemoryDatabaseBuilder(
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    ItemTrackerDatabase::class.java
+                    ItemTrackerDatabase::class.java,
+                    "item_tracker.db"
                 )
                     .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()

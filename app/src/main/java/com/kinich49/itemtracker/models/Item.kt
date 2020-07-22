@@ -1,6 +1,9 @@
 package com.kinich49.itemtracker.models
 
-import androidx.room.*
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
 
 @Entity(
     tableName = "Items",
@@ -18,6 +21,6 @@ import androidx.room.*
 data class Item(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "brand_id") val brandId: Long,
+    @ColumnInfo(name = "brand_id") val brandId: Long?,
     @ColumnInfo(name = "category_id") val categoryId: Long
 )

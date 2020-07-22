@@ -17,6 +17,9 @@ interface CategoryDao {
     @Insert
     fun insert(category: Category)
 
+    @Insert
+    fun insert(vararg category: Category)
+
     @Transaction
     @Query("SELECT * FROM Categories WHERE id = :id")
     fun getCategoryWithItems(id: Long): LiveData<List<CategoryWithItems>>

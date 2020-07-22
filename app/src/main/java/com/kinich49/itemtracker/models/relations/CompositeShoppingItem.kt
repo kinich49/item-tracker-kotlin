@@ -3,9 +3,6 @@ package com.kinich49.itemtracker.models.relations
 import androidx.room.ColumnInfo
 import androidx.room.DatabaseView
 import androidx.room.Embedded
-import com.kinich49.itemtracker.models.Brand
-import com.kinich49.itemtracker.models.Category
-import com.kinich49.itemtracker.models.ShoppingItem
 
 @DatabaseView(
     "SELECT si.id as shopping_item_id, " +

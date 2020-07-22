@@ -20,4 +20,7 @@ interface BrandDao {
 
     @Insert
     fun insert(brand: Brand)
+
+    @Insert
+    fun insert(vararg brand: Brand)
 }

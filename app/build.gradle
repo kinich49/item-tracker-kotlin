@@ -12,6 +12,7 @@ android {
         }
     }
 
+
     defaultConfig {
         applicationId "com.kinich49.itemtracker"
         minSdkVersion 23
@@ -26,13 +27,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "BASE_URL", "\"http://http://18.223.212.95:9000/api/mobile\""
+            buildConfigField "String", "BASE_URL", "\"http://http://18.223.212.95:9000/api/mobile/\""
         }
         development {
             signingConfig debug.signingConfig
             applicationIdSuffix ".debug"
             debuggable true
-            buildConfigField "String", "BASE_URL", "\"http://192.168.1.254:9000/api/mobile\""
+            buildConfigField "String", "BASE_URL", "\""+baseUrl()+"\""
+            buildConfigField "String", "USERNAME", "\""+username()+"\""
+            buildConfigField "String", "PASSWORD", "\""+password()+"\""
         }
     }
 
@@ -51,6 +54,24 @@ android {
     }
 }
 
+def username() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("username")
+}
+
+def password() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("password")
+}
+
+def baseUrl() {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    return properties.getProperty("base_url") + "api/mobile/"
+}
+
 dependencies {
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
 
@@ -63,8 +84,14 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: '2.9.0'
-    implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: '2.9.0'
+    implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: "$rootProject.retrofitVersion"
+    implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: "$rootProject.retrofitVersion"
+    compile group: 'com.squareup.retrofit2', name: 'adapter-rxjava2', version: "$rootProject.retrofitVersion"
+    implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.19'
+    implementation group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.1.1'
+    implementation group: 'io.reactivex.rxjava2', name: 'rxkotlin', version: '2.4.0'
+
+    implementation("com.squareup.okhttp3:logging-interceptor:4.8.0")
 
     // Room components
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
