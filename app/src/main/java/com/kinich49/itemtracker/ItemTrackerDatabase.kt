@@ -5,9 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.kinich49.itemtracker.models.*
-import com.kinich49.itemtracker.models.converters.Converters
-import com.kinich49.itemtracker.models.daos.*
+import com.kinich49.itemtracker.models.database.*
+import com.kinich49.itemtracker.models.database.converters.Converters
+import com.kinich49.itemtracker.models.database.Store
+import com.kinich49.itemtracker.models.database.daos.*
 
 @Database(
     entities = [Brand::class,

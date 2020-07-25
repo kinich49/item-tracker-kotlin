@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">ItemTracker</string>
+    <string name="item_hint">Type the item</string>
+    <string name="brand_hint">Type the brand</string>
+    <string name="category_hint">Type the category</string>
+    <string name="unit_price_hint">Unit price</string>
+    <string name="quantity_hint">Quantity</string>
+    <string name="unit_hint">Category</string>
+    <string name="total">Total</string>
+    <string name="shopping_receipt">Shopping Receipt</string>
+    <string name="where_did_you_shop">Where did you shop?</string>
+    <string name="add_shopping_item">Add Shopping item</string>
 </resources>

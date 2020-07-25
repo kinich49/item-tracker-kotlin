@@ -1,6 +1,6 @@
 package com.kinich49.itemtracker.remote
 
-import com.kinich49.itemtracker.models.Brand
+import com.kinich49.itemtracker.models.database.Brand
 import io.reactivex.Completable
 import io.reactivex.Observable
 import retrofit2.http.*

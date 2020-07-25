@@ -4,8 +4,9 @@ import android.app.Application
 import android.util.Base64
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.kinich49.itemtracker.models.LocalDateDeserializer
+import com.kinich49.itemtracker.remote.deserializers.LocalDateDeserializer
 import com.kinich49.itemtracker.remote.*
+import com.kinich49.itemtracker.remote.interceptors.AuthorizationInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -91,7 +92,9 @@ class App : Application() {
 
         private val gson: Gson by lazy {
             GsonBuilder()
-                .registerTypeAdapter(LocalDate::class.java, LocalDateDeserializer())
+                .registerTypeAdapter(LocalDate::class.java,
+                    LocalDateDeserializer()
+                )
                 .create()
         }
 

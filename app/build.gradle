@@ -4,7 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
 
     variantFilter { variant ->
         if (variant.buildType.name == 'debug') {
@@ -12,11 +12,15 @@ android {
         }
     }
 
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
 
     defaultConfig {
         applicationId "com.kinich49.itemtracker"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
@@ -33,9 +37,9 @@ android {
             signingConfig debug.signingConfig
             applicationIdSuffix ".debug"
             debuggable true
-            buildConfigField "String", "BASE_URL", "\""+baseUrl()+"\""
-            buildConfigField "String", "USERNAME", "\""+username()+"\""
-            buildConfigField "String", "PASSWORD", "\""+password()+"\""
+            buildConfigField "String", "BASE_URL", "\"" + baseUrl() + "\""
+            buildConfigField "String", "USERNAME", "\"" + username() + "\""
+            buildConfigField "String", "PASSWORD", "\"" + password() + "\""
         }
     }
 
@@ -77,7 +81,8 @@ dependencies {
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.0'
+    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation 'androidx.activity:activity-ktx:1.1.0'
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation group: 'com.jakewharton.timber', name: 'timber', version: '4.7.1'
@@ -86,12 +91,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation group: 'com.squareup.retrofit2', name: 'retrofit', version: "$rootProject.retrofitVersion"
     implementation group: 'com.squareup.retrofit2', name: 'converter-gson', version: "$rootProject.retrofitVersion"
-    compile group: 'com.squareup.retrofit2', name: 'adapter-rxjava2', version: "$rootProject.retrofitVersion"
+    implementation group: 'com.squareup.retrofit2', name: 'adapter-rxjava2', version: "$rootProject.retrofitVersion"
     implementation group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.2.19'
     implementation group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.1.1'
     implementation group: 'io.reactivex.rxjava2', name: 'rxkotlin', version: '2.4.0'
-
-    implementation("com.squareup.okhttp3:logging-interceptor:4.8.0")
+    implementation group: 'com.squareup.okhttp3', name: 'logging-interceptor', version: '4.8.0'
 
     // Room components
     implementation "androidx.room:room-runtime:$rootProject.roomVersion"
