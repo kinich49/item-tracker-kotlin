@@ -34,7 +34,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:hint="@string/brand_hint"
-            android:text="@{shoppingItem.brand.name}"
+            android:text="@={shoppingItem.brand.name}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_autocomplete" />
 
@@ -46,7 +46,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:hint="@string/category_hint"
-            android:text="@{shoppingItem.category.name}"
+            android:text="@={shoppingItem.category.name}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/brand_autocomplete" />
 
@@ -59,7 +59,7 @@
             android:layout_marginEnd="10dp"
             android:hint="@string/quantity_hint"
             android:inputType="numberDecimal"
-            android:text="@{shoppingItem.quantity}"
+            android:text="@={shoppingItem.quantity}"
             app:layout_constraintEnd_toStartOf="@+id/vertical_anchor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/category_autocomplete" />
@@ -73,7 +73,7 @@
             android:layout_marginEnd="10dp"
             android:hint="@string/unit_hint"
             android:inputType="numberDecimal"
-            android:text="@{shoppingItem.unit}"
+            android:text="@={shoppingItem.unit}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/vertical_anchor"
             app:layout_constraintTop_toBottomOf="@+id/category_autocomplete" />
@@ -87,7 +87,7 @@
             android:layout_marginEnd="10dp"
             android:hint="@string/unit_price_hint"
             android:inputType="numberDecimal"
-            android:text="@{shoppingItem.unitPrice}"
+            android:text="@={shoppingItem.unitPrice}"
             app:layout_constraintEnd_toStartOf="@+id/vertical_anchor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/quantity" />

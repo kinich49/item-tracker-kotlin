@@ -1,6 +1,8 @@
 package com.kinich49.itemtracker.models.view
 
+import androidx.databinding.ObservableField
+
 data class Store(
-    val id: Long,
-    var name: String?
+    var id: Long? = null,
+    var name: String? = null
 )

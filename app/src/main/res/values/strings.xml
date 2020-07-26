@@ -8,6 +8,8 @@
     <string name="unit_hint">Category</string>
     <string name="total">Total</string>
     <string name="shopping_receipt">Shopping Receipt</string>
-    <string name="where_did_you_shop">Where did you shop?</string>
+    <string name="store">Store</string>
     <string name="add_shopping_item">Add Shopping item</string>
+    <string name="save_list">Save List</string>
+    <string name="shopping_date">Shopping Date</string>
 </resources>
