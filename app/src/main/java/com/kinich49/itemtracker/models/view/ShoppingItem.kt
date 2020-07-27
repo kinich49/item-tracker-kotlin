@@ -1,18 +1,50 @@
 package com.kinich49.itemtracker.models.view
 
+import androidx.databinding.BaseObservable
+import androidx.databinding.Bindable
 import com.kinich49.itemtracker.BR
 import com.kinich49.itemtracker.R
+import java.text.DecimalFormat
 
 class ShoppingItem(
     val id: Long,
     var name: String? = null,
-    var quantity: String? = null,
-    var unitPrice: String? = null,
-    val currency: String = "MXN",
     var category: Category? = null,
-    var brand: Brand? = null,
+    var brand: Brand? = null
+) : BaseObservable() {
+
     var unit: String = "Unit"
-) {
+    val currency: String = "MXN"
+
+    @get: Bindable
+    var unitPrice: String = ""
+        set(value) {
+            field = value
+            updateTotalPrice()
+            notifyPropertyChanged(BR.unitPrice)
+        }
+
+    @get: Bindable
+    var quantity: String = ""
+        set(value) {
+            field = value
+            updateTotalPrice()
+            notifyPropertyChanged(BR.quantity)
+        }
+
+    @get: Bindable
+    var totalPrice: String = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.totalPrice)
+        }
+
+    private fun updateTotalPrice() {
+        if (unitPrice.isNotEmpty() && quantity.isNotEmpty()) {
+            val result = unitPrice.toDouble() * quantity.toDouble()
+            totalPrice = "$${priceFormatter.format(result)} $currency"
+        }
+    }
 
     fun toRecyclerItem() =
         RecyclerItem(
@@ -20,4 +52,8 @@ class ShoppingItem(
             layoutId = R.layout.blank_shopping_item_layout,
             variableId = BR.shoppingItem
         )
+
+    companion object {
+        private val priceFormatter: DecimalFormat = DecimalFormat("#,###.##")
+    }
 }
