@@ -3,25 +3,32 @@ package com.kinich49.itemtracker.shoppigList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.kinich49.itemtracker.LiveEvent
 import com.kinich49.itemtracker.models.view.*
 import timber.log.Timber
+import java.time.LocalDate
+import java.time.Month
 
 class ShoppingListViewModel : ViewModel() {
 
     private var nextShoppingItemId = -1L
     private val _data: MutableLiveData<MutableList<RecyclerItem>> = MutableLiveData()
     val data: LiveData<MutableList<RecyclerItem>> = _data
-    private val _store: MutableLiveData<Store> = MutableLiveData()
-    var store: LiveData<Store> = _store
+
+    val store: MutableLiveData<Store> = MutableLiveData()
     private val _storeError: MutableLiveData<String> = MutableLiveData()
     val storeError: LiveData<String> = _storeError
+
+    val shoppingDate: MutableLiveData<LocalDate> = MutableLiveData()
     private val _shoppingDateError: MutableLiveData<String> = MutableLiveData()
     val shoppingDateError: LiveData<String> = _shoppingDateError
+    val datePickerEvent: LiveEvent<LocalDate> = LiveEvent()
 
     init {
         val items = ArrayList<RecyclerItem>()
         _data.value = items
-        _store.value = Store()
+        store.value = Store()
+        shoppingDate.value = LocalDate.of(2020, Month.MAY, 20)
     }
 
     fun addBlankShoppingItem() {
@@ -39,11 +46,18 @@ class ShoppingListViewModel : ViewModel() {
     }
 
     fun saveList() {
-        val store = _store.value
+        val store = store.value
 
         if (store?.name.isNullOrBlank() || store?.name.isNullOrEmpty()) {
             _storeError.value = "Store can't be empty"
         }
     }
 
+    fun onShoppingDateClick() {
+        datePickerEvent.value = shoppingDate.value
+    }
+
+    fun onShoppingDateSelected(value: LocalDate) {
+        shoppingDate.value = value
+    }
 }

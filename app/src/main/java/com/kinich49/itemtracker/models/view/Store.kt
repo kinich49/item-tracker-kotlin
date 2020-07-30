@@ -5,4 +5,7 @@ import androidx.databinding.ObservableField
 data class Store(
     var id: Long? = null,
     var name: String? = null
-)
+) {
+
+    override fun toString(): String = name ?: ""
+}
