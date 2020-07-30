@@ -15,5 +15,5 @@ class AutoSuggestView : AppCompatAutoCompleteTextView {
         defStyleAttr
     )
 
-    var item: Store? = null
+    var item: Any? = null
 }

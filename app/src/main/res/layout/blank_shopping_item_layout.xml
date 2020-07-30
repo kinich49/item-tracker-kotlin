@@ -19,106 +19,155 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <AutoCompleteTextView
-                android:id="@+id/item_autocomplete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/item_hint"
-                android:text="@{shoppingItem.name}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <AutoCompleteTextView
-                android:id="@+id/brand_autocomplete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/brand_hint"
-                android:text="@={shoppingItem.brand.name}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/item_autocomplete" />
-
-            <AutoCompleteTextView
-                android:id="@+id/category_autocomplete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/category_hint"
-                android:text="@={shoppingItem.category.name}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/brand_autocomplete" />
-
-            <EditText
-                android:id="@+id/quantity"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/item_autocomplete_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/quantity_hint"
-                android:inputType="numberDecimal"
-                android:text="@={shoppingItem.quantity}"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/item"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.kinich49.itemtracker.views.AutoSuggestView
+                    android:id="@+id/item_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/brand_autocomplete_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/brand"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_autocomplete_layout">
+
+                <com.kinich49.itemtracker.views.AutoSuggestView
+                    android:id="@+id/brand_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:item="@={shoppingItem.brand}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/category_autocomplete_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/category"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/brand_autocomplete_layout">
+
+                <com.kinich49.itemtracker.views.AutoSuggestView
+                    android:id="@+id/category_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:item="@={shoppingItem.category}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/quantity_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/quantity"
+                app:errorEnabled="true"
                 app:layout_constraintEnd_toStartOf="@+id/vertical_anchor"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/category_autocomplete" />
+                app:layout_constraintTop_toBottomOf="@+id/category_autocomplete_layout">
 
-            <AutoCompleteTextView
-                android:id="@+id/unit_autocomplete"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/quantity_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:text="@={shoppingItem.quantity}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/unit_autocomplete_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/unit_hint"
-                android:inputType="numberDecimal"
-                android:text="@={shoppingItem.unit}"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/unit"
+                app:errorEnabled="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/vertical_anchor"
-                app:layout_constraintTop_toBottomOf="@+id/category_autocomplete" />
+                app:layout_constraintTop_toBottomOf="@+id/category_autocomplete_layout">
 
-            <EditText
-                android:id="@+id/unit_price"
+                <com.kinich49.itemtracker.views.AutoSuggestView
+                    android:id="@+id/unit_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:item="@={shoppingItem.unit}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/unit_price_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                android:hint="@string/unit_price_hint"
-                android:inputType="numberDecimal"
-                android:text="@={shoppingItem.unitPrice}"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:hint="@string/unit_price"
+                app:errorEnabled="true"
                 app:layout_constraintEnd_toStartOf="@+id/vertical_anchor"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/quantity" />
+                app:layout_constraintTop_toBottomOf="@+id/quantity_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/unit_price_field"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal"
+                    android:text="@={shoppingItem.unitPrice}" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/total_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
+                android:paddingBottom="10dp"
                 android:text="@string/total"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/unit_price" />
+                app:layout_constraintStart_toStartOf="@+id/unit_price_layout"
+                app:layout_constraintTop_toBottomOf="@+id/unit_price_layout" />
 
             <TextView
                 android:id="@+id/total_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginEnd="12dp"
                 android:text="@{shoppingItem.totalPrice}"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toStartOf="@+id/vertical_anchor"
-                app:layout_constraintTop_toBottomOf="@+id/unit_price"
+                app:layout_constraintTop_toBottomOf="@+id/unit_price_layout"
                 tools:text="$69.99" />
 
             <androidx.constraintlayout.widget.Guideline

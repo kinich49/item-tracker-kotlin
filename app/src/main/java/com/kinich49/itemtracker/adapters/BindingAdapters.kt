@@ -24,7 +24,7 @@ fun setRecyclerViewItems(
 }
 
 @InverseBindingAdapter(attribute = "app:item", event = "")
-fun captureStore(view: AutoSuggestView): Store? {
+fun captureItem(view: AutoSuggestView): Any? {
     return view.item
 }
 
@@ -41,14 +41,14 @@ fun setItemListener(
         }
 
         override fun onItemSelected(parent: AdapterView<*>?, _view: View?, pos: Int, id: Long) {
-            (_view as? AutoSuggestView)?.item = parent?.selectedItem as Store?
+            (_view as? AutoSuggestView)?.item = parent?.selectedItem
             itemChanged.onChange()
         }
 
     }
 
     view.setOnItemClickListener { _, _, i, _ ->
-        view.item = view.adapter.getItem(i) as? Store?
+        view.item = view.adapter.getItem(i)
         itemChanged.onChange()
     }
 }

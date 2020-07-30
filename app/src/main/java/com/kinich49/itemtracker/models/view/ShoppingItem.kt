@@ -13,7 +13,12 @@ class ShoppingItem(
     var brand: Brand? = null
 ) : BaseObservable() {
 
+    @get: Bindable
     var unit: String = "Unit"
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.unit)
+        }
     val currency: String = "MXN"
 
     @get: Bindable

@@ -17,11 +17,4 @@ class AutoSuggestAdapter<Model>(
 ) {
 
     var item: Model? = null
-
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val view = super.getView(position, convertView, parent)
-        item = getItem(position)
-        (convertView as? AutoSuggestView)?.item = item as Store?
-        return view
-    }
 }
