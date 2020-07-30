@@ -56,8 +56,6 @@ class BlankShoppingListActivity : AppCompatActivity() {
             val dpd = DatePickerDialog(
                 this,
                 DatePickerDialog.OnDateSetListener { _, _year, monthOfYear, dayOfMonth ->
-                    // Display Selected date in TextView
-                    val date = "$_year/$monthOfYear/$dayOfMonth"
                     //Increase monthOfYear by one
                     //Calendar/LocalDate compatibility
                     val monthOfYearCompat = monthOfYear + 1
