@@ -7,5 +7,5 @@ data class Store(
     var name: String? = null
 ) {
 
-    override fun toString(): String = name ?: ""
+    override fun toString(): String = name ?: "Store id: $id"
 }

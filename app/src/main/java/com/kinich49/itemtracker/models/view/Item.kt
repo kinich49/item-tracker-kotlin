@@ -7,7 +7,6 @@ data class Item(
     var name: String? = null
 ) {
 
-    override fun toString(): String {
-        return name ?: "Item id: $id"
-    }
+    override fun toString(): String = name ?: "Item id: $id"
+
 }
