@@ -15,7 +15,7 @@ interface CategoryDao {
     @Query("SELECT * from Categories")
     fun getAllCategories(): LiveData<List<Category>>
 
-    @Query("SELECT * FROM Categories WHERE name LIKE  '%' || :name || '%'")
+    @Query("SELECT * FROM Categories WHERE name LIKE  '%' || :name || '%' COLLATE NOCASE")
     fun getCategoriesLike(name: String): List<Category>
 
     @Insert

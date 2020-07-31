@@ -34,7 +34,8 @@ interface ItemDao {
                 "ON br.id = it.brand_id " +
                 "INNER JOIN Categories ca " +
                 "ON ca.id = it.category_id " +
-                "WHERE it.name LIKE  '%' || :name || '%'"
+                "WHERE it.name LIKE  '%' || :name || '%' " +
+                "COLLATE NOCASE"
     )
     fun getItemsLike(name: String): List<CompositeItem>
 
