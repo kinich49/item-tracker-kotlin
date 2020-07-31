@@ -2,6 +2,8 @@ package com.kinich49.itemtracker
 
 import android.app.Application
 import android.util.Base64
+import com.facebook.stetho.Stetho
+import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.kinich49.itemtracker.remote.deserializers.LocalDateDeserializer
@@ -21,8 +23,11 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        if (BuildConfig.DEBUG)
+        if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+            Stetho.initializeWithDefaults(this);
+        }
+
     }
 
     companion object ServiceFactory {
@@ -87,12 +92,14 @@ class App : Application() {
                         )}"
                     )
                 )
+                .addNetworkInterceptor(StethoInterceptor())
                 .build();
         }
 
         private val gson: Gson by lazy {
             GsonBuilder()
-                .registerTypeAdapter(LocalDate::class.java,
+                .registerTypeAdapter(
+                    LocalDate::class.java,
                     LocalDateDeserializer()
                 )
                 .create()
