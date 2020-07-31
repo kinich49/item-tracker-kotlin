@@ -3,7 +3,6 @@ package com.kinich49.itemtracker.views
 import android.content.Context
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView
-import com.kinich49.itemtracker.models.view.Store
 
 class AutoSuggestView : AppCompatAutoCompleteTextView {
 

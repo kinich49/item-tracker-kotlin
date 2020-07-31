@@ -14,6 +14,9 @@ interface BrandDao {
     @Query("SELECT * FROM Brands")
     fun getAllBrands(): LiveData<List<Brand>>
 
+    @Query("SELECT * FROM Brands WHERE name LIKE  '%' || :name || '%'")
+    fun getBrandsLike(name: String): List<Brand>
+
     @Transaction
     @Query("SELECT * FROM Brands")
     fun getAllBrandsWithItems(): LiveData<List<BrandWithItems>>

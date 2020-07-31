@@ -34,9 +34,7 @@ class ShoppingListViewModel : ViewModel() {
     fun addBlankShoppingItem() {
         val blankShoppingItem = ShoppingItem(
             nextShoppingItemId,
-            name = "Item $nextShoppingItemId",
-            brand = Brand(),
-            category = Category()
+            name = "Item $nextShoppingItemId"
         ).toRecyclerItem()
         nextShoppingItemId -= 1
 

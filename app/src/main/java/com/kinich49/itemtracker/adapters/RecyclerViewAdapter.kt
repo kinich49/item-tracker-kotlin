@@ -2,14 +2,18 @@ package com.kinich49.itemtracker.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
+import com.kinich49.itemtracker.ItemTrackerDatabase
+import com.kinich49.itemtracker.models.database.toView
 import com.kinich49.itemtracker.models.view.Brand
 import com.kinich49.itemtracker.models.view.Category
 import com.kinich49.itemtracker.models.view.Item
 import com.kinich49.itemtracker.models.view.RecyclerItem
 import kotlinx.android.synthetic.main.blank_shopping_item_layout.view.*
+import timber.log.Timber
 
 class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.BindingViewHolder>() {
 
@@ -25,34 +29,53 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.BindingView
             parent, false
         )
 
-        val items = mutableListOf(
-            Item(1L, name = "Test item 1"),
-            Item(2L, name = "Test item 2")
-        )
-        val itemAdapter = AutoSuggestAdapter(parent.context, items)
+        val itemAdapter = AutoSuggestAdapter<Item>(parent.context)
         binding.root.item_field.setAdapter(itemAdapter)
+        val itemDao = ItemTrackerDatabase.getDatabase(parent.context).itemDao()
+        binding.root.item_field.addTextChangedListener { editable ->
+            itemAdapter.clear()
+            editable?.toString()?.let {
+                itemDao.getItemsLike(it)
+                    .map { i -> i.toView() }
+                    .let { results ->
+                        itemAdapter.addAll(results)
+                    }
+            }
+        }
 
-        val brands = mutableListOf(
-            Brand(1L, "Test Brand 1"),
-            Brand(2L, "Test Brand 2"),
-            Brand(3L, "Test Brand 3")
-        )
-        val brandAdapter = AutoSuggestAdapter(parent.context, brands)
+        val brandAdapter = AutoSuggestAdapter<Brand>(parent.context)
         binding.root.brand_field.setAdapter(brandAdapter)
+        val brandDao = ItemTrackerDatabase.getDatabase(parent.context).brandDao()
+        binding.root.brand_field.addTextChangedListener { editable ->
+            brandAdapter.clear()
+            editable?.toString()?.let {
+                brandDao.getBrandsLike(it)
+                    .map { b -> b.toView() }
+                    .let { results ->
+                        brandAdapter.addAll(results)
+                    }
+            }
+        }
 
-        val categories = mutableListOf(
-            Category(1L, "Test Category 1"),
-            Category(2L, "Test Category 2"),
-            Category(3L, "Test Category 3")
-        )
-
-        val categoryAdapter = AutoSuggestAdapter(parent.context, categories)
+        val categoryAdapter = AutoSuggestAdapter<Category>(parent.context)
         binding.root.category_field.setAdapter(categoryAdapter)
+        val categoryDao = ItemTrackerDatabase.getDatabase(parent.context).categoryDao()
+        binding.root.category_field.addTextChangedListener { editable ->
+            categoryAdapter.clear()
+            editable?.toString()?.let {
+                categoryDao.getCategoriesLike(it)
+                    .map { c -> c.toView() }
+                    .let { results ->
+                        categoryAdapter.addAll(results)
+                    }
+            }
+        }
 
         val units = mutableListOf(
             "Unit",
             "KG"
         )
+
         val unitAdapter = AutoSuggestAdapter(parent.context, units)
         binding.root.unit_field.setAdapter(unitAdapter)
 

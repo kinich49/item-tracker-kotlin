@@ -7,10 +7,12 @@ import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.kinich49.itemtracker.ItemTrackerDatabase
 import com.kinich49.itemtracker.R
 import com.kinich49.itemtracker.adapters.AutoSuggestAdapter
 import com.kinich49.itemtracker.adapters.RecyclerViewAdapter
@@ -19,6 +21,7 @@ import com.kinich49.itemtracker.databinding.BlankShoppingItemLayoutBindingImpl
 import com.kinich49.itemtracker.databinding.BlankShoppingListLayoutBinding
 import com.kinich49.itemtracker.databinding.BlankShoppingListLayoutBindingImpl
 import com.kinich49.itemtracker.models.database.Brand
+import com.kinich49.itemtracker.models.database.toView
 import com.kinich49.itemtracker.models.view.ShoppingItem
 import com.kinich49.itemtracker.models.view.Store
 import kotlinx.android.synthetic.main.blank_shopping_list_layout.*
@@ -38,14 +41,20 @@ class BlankShoppingListActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        val storeAdapter: AutoSuggestAdapter<Store> = AutoSuggestAdapter(
-            baseContext,
-            mutableListOf(
-                Store(1L, "HEB_1"),
-                Store(2L, "HEB_2"),
-                Store(2L, "HEB_3")
-            )
-        )
+        val storeAdapter: AutoSuggestAdapter<Store> = AutoSuggestAdapter(baseContext)
+        val storeDao = ItemTrackerDatabase.getDatabase(this).storeDao()
+
+        binding.storeInputField.addTextChangedListener { editable ->
+            storeAdapter.clear()
+            editable?.toString()?.let {
+                storeDao.getStoresLike(it)
+                    .map { s -> s.toView() }
+                    .let { results ->
+                        storeAdapter.addAll(results)
+                    }
+            }
+        }
+
 
         viewModel.datePickerEvent.observe(this, Observer {
             val year = it.year

@@ -37,7 +37,8 @@
                     android:id="@+id/item_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none" />
+                    android:inputType="none"
+                    app:item="@={shoppingItem.item}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -58,6 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
+                    android:text="@{shoppingItem.brand.name}"
                     app:item="@={shoppingItem.brand}" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,6 +81,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
+                    android:text="@{shoppingItem.category.name}"
                     app:item="@={shoppingItem.category}" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,6 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
+                    android:text="@{shoppingItem.unit}"
                     app:item="@={shoppingItem.unit}" />
             </com.google.android.material.textfield.TextInputLayout>
 

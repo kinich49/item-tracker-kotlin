@@ -8,9 +8,7 @@ import java.text.DecimalFormat
 
 class ShoppingItem(
     val id: Long,
-    var name: String? = null,
-    var category: Category? = null,
-    var brand: Brand? = null
+    var name: String? = null
 ) : BaseObservable() {
 
     @get: Bindable
@@ -42,6 +40,28 @@ class ShoppingItem(
         set(value) {
             field = value
             notifyPropertyChanged(BR.totalPrice)
+        }
+
+    @get: Bindable
+    var category: Category? = Category()
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.category)
+        }
+
+    @get: Bindable
+    var brand: Brand? = Brand()
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.brand)
+        }
+
+    @get: Bindable
+    var item: Item? = null
+        set(value) {
+            field = value
+            this.brand = value?.brand
+            this.category = value?.category
         }
 
     private fun updateTotalPrice() {
