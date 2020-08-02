@@ -6,7 +6,7 @@
 
         <variable
             name="shoppingItem"
-            type="com.kinich49.itemtracker.models.view.ShoppingItem" />
+            type="mx.kinich49.itemtracker.models.view.ShoppingItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -33,7 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <com.kinich49.itemtracker.views.AutoSuggestView
+                <mx.kinich49.itemtracker.views.AutoSuggestView
                     android:id="@+id/item_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/item_autocomplete_layout">
 
-                <com.kinich49.itemtracker.views.AutoSuggestView
+                <mx.kinich49.itemtracker.views.AutoSuggestView
                     android:id="@+id/brand_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/brand_autocomplete_layout">
 
-                <com.kinich49.itemtracker.views.AutoSuggestView
+                <mx.kinich49.itemtracker.views.AutoSuggestView
                     android:id="@+id/category_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                 app:layout_constraintStart_toEndOf="@+id/vertical_anchor"
                 app:layout_constraintTop_toBottomOf="@+id/category_autocomplete_layout">
 
-                <com.kinich49.itemtracker.views.AutoSuggestView
+                <mx.kinich49.itemtracker.views.AutoSuggestView
                     android:id="@+id/unit_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -18,7 +18,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.kinich49.itemtracker"
+        applicationId "mx.kinich49.itemtracker"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1

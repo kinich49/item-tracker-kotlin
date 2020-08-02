@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.kinich49.itemtracker.shoppigList.ShoppingListViewModel" />
+            type="mx.kinich49.itemtracker.shoppigList.ShoppingListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -43,7 +43,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/shopping_receipt_label">
 
-            <com.kinich49.itemtracker.views.AutoSuggestView
+            <mx.kinich49.itemtracker.views.AutoSuggestView
                 android:id="@+id/store_input_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
