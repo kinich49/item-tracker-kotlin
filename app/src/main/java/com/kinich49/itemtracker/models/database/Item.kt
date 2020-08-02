@@ -4,8 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.kinich49.itemtracker.models.database.Brand
-import com.kinich49.itemtracker.models.database.Category
 
 @Entity(
     tableName = "Items",
@@ -21,8 +19,9 @@ import com.kinich49.itemtracker.models.database.Category
         )]
 )
 data class Item(
-    @PrimaryKey val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long? = null,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "brand_id") val brandId: Long?,
-    @ColumnInfo(name = "category_id") val categoryId: Long
+    @ColumnInfo(name = "category_id") val categoryId: Long,
+    @ColumnInfo(name = "state") var state: Long = 0
 )

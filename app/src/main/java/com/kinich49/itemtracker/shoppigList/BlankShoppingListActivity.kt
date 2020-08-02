@@ -1,37 +1,33 @@
 package com.kinich49.itemtracker.shoppigList
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.kinich49.itemtracker.ItemTrackerDatabase
 import com.kinich49.itemtracker.R
 import com.kinich49.itemtracker.adapters.AutoSuggestAdapter
-import com.kinich49.itemtracker.adapters.RecyclerViewAdapter
-import com.kinich49.itemtracker.databinding.BlankShoppingItemLayoutBinding
-import com.kinich49.itemtracker.databinding.BlankShoppingItemLayoutBindingImpl
 import com.kinich49.itemtracker.databinding.BlankShoppingListLayoutBinding
-import com.kinich49.itemtracker.databinding.BlankShoppingListLayoutBindingImpl
-import com.kinich49.itemtracker.models.database.Brand
 import com.kinich49.itemtracker.models.database.toView
-import com.kinich49.itemtracker.models.view.ShoppingItem
 import com.kinich49.itemtracker.models.view.Store
+import com.kinich49.itemtracker.shoppigList.impl.SaveShoppingJobImpl
 import kotlinx.android.synthetic.main.blank_shopping_list_layout.*
-import timber.log.Timber
 import java.time.LocalDate
-import java.util.*
 
 class BlankShoppingListActivity : AppCompatActivity() {
 
-    private val viewModel: ShoppingListViewModel by viewModels()
+    private val viewModel: ShoppingListViewModel by viewModels {
+        val db = ItemTrackerDatabase.getDatabase(this)
+        val saveShoppingJob: SaveShoppingJob = SaveShoppingJobImpl(
+            db.shoppingListDao(), db.storeDao(), db.shoppingItemDao(),
+            db.brandDao(), db.categoryDao(), db.itemDao()
+        )
+        ShoppingListFactory(saveShoppingJob)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +50,6 @@ class BlankShoppingListActivity : AppCompatActivity() {
                     }
             }
         }
-
 
         viewModel.datePickerEvent.observe(this, Observer {
             val year = it.year
@@ -84,5 +79,9 @@ class BlankShoppingListActivity : AppCompatActivity() {
             viewModel.addBlankShoppingItem()
         }
 
+        viewModel.onShoppingComplete.observe(this, Observer {
+            setResult(Activity.RESULT_OK)
+            finish()
+        })
     }
 }

@@ -22,7 +22,7 @@ interface BrandDao {
     fun getAllBrandsWithItems(): LiveData<List<BrandWithItems>>
 
     @Insert
-    fun insert(brand: Brand)
+    fun insert(brand: Brand): Long
 
     @Insert
     fun insert(vararg brand: Brand)

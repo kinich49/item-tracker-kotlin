@@ -7,7 +7,7 @@ import com.kinich49.itemtracker.R
 import java.text.DecimalFormat
 
 class ShoppingItem(
-    val id: Long,
+    var id: Long? = null,
     var name: String? = null
 ) : BaseObservable() {
 
@@ -62,6 +62,7 @@ class ShoppingItem(
             field = value
             this.brand = value?.brand
             this.category = value?.category
+            this.name = value?.name
         }
 
     private fun updateTotalPrice() {

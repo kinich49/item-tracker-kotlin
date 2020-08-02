@@ -17,8 +17,10 @@ interface ShoppingListDao {
     @Transaction
     @Query(
         "SELECT sl.id as shopping_list_id, sl.shopping_date, " +
-                "st.id as store_id, st.name as store_name, " +
-                "si.id as shopping_item_id, si.unit_price, si.currency, si.quantity " +
+                "sl.state as shopping_list_state, " +
+                "st.id as store_id, st.name as store_name, st.state as store_state, " +
+                "si.id as shopping_item_id, si.unit_price, si.currency, si.quantity, " +
+                "si.state as shopping_item_state " +
                 "FROM Shopping_Lists as sl " +
                 "INNER JOIN Shopping_ITEMS si " +
                 "ON si.shopping_list_id = sl.id " +
@@ -29,7 +31,7 @@ interface ShoppingListDao {
     fun getShoppingListBy(id: Long): LiveData<CompositeShoppingList>
 
     @Insert
-    fun insert(shoppingList: ShoppingList)
+    fun insert(shoppingList: ShoppingList): Long
 
     @Insert
     fun insert(vararg shoppingList: ShoppingList)

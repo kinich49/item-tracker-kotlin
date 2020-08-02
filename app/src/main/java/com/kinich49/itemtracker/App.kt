@@ -1,13 +1,15 @@
 package com.kinich49.itemtracker
 
 import android.app.Application
+import android.content.Context
 import android.util.Base64
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.kinich49.itemtracker.remote.deserializers.LocalDateDeserializer
+import com.kinich49.itemtracker.models.sync.DBDownloadSync
 import com.kinich49.itemtracker.remote.*
+import com.kinich49.itemtracker.remote.deserializers.LocalDateDeserializer
 import com.kinich49.itemtracker.remote.interceptors.AuthorizationInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -60,6 +62,19 @@ class App : Application() {
         val shoppingListService: ShoppingListService by lazy {
             retrofit
                 .create(ShoppingListService::class.java)
+        }
+
+        fun getDownloadSync(context: Context): DBDownloadSync {
+            return DBDownloadSync(
+                brandService, categoryService, itemService,
+                storeService, shoppingListService, shoppingItemService,
+                ItemTrackerDatabase.getDatabase(context).brandDao(),
+                ItemTrackerDatabase.getDatabase(context).categoryDao(),
+                ItemTrackerDatabase.getDatabase(context).itemDao(),
+                ItemTrackerDatabase.getDatabase(context).storeDao(),
+                ItemTrackerDatabase.getDatabase(context).shoppingListDao(),
+                ItemTrackerDatabase.getDatabase(context).shoppingItemDao()
+            )
         }
 
         private val retrofit: Retrofit by lazy {

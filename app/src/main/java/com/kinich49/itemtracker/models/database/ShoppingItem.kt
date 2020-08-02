@@ -4,8 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.kinich49.itemtracker.models.database.Item
-import com.kinich49.itemtracker.models.database.ShoppingList
 
 @Entity(
     tableName = "Shopping_Items",
@@ -22,10 +20,11 @@ import com.kinich49.itemtracker.models.database.ShoppingList
         )]
 )
 data class ShoppingItem(
-    @PrimaryKey val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long? = null,
     val currency: String = "MXN",
     val quantity: Double,
     @ColumnInfo(name = "unit_price") val unitPrice: Int,
     @ColumnInfo(name = "shopping_list_id") val shoppingListId: Long,
-    @ColumnInfo(name = "item_id") val itemId: Long
+    @ColumnInfo(name = "item_id") val itemId: Long,
+    var state: Int = 0
 )

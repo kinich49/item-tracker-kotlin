@@ -4,14 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.kinich49.itemtracker.LiveEvent
-import com.kinich49.itemtracker.models.view.*
-import timber.log.Timber
+import com.kinich49.itemtracker.models.view.RecyclerItem
+import com.kinich49.itemtracker.models.view.ShoppingItem
+import com.kinich49.itemtracker.models.view.Store
+import com.kinich49.itemtracker.remote.SchedulerProvider
 import java.time.LocalDate
 import java.time.Month
 
-class ShoppingListViewModel : ViewModel() {
+class ShoppingListViewModel(
+    private val saveShoppingJob: SaveShoppingJob
+) : ViewModel() {
 
-    private var nextShoppingItemId = -1L
     private val _data: MutableLiveData<MutableList<RecyclerItem>> = MutableLiveData()
     val data: LiveData<MutableList<RecyclerItem>> = _data
 
@@ -23,6 +26,7 @@ class ShoppingListViewModel : ViewModel() {
     private val _shoppingDateError: MutableLiveData<String> = MutableLiveData()
     val shoppingDateError: LiveData<String> = _shoppingDateError
     val datePickerEvent: LiveEvent<LocalDate> = LiveEvent()
+    val onShoppingComplete: LiveEvent<Unit> = LiveEvent()
 
     init {
         val items = ArrayList<RecyclerItem>()
@@ -32,11 +36,7 @@ class ShoppingListViewModel : ViewModel() {
     }
 
     fun addBlankShoppingItem() {
-        val blankShoppingItem = ShoppingItem(
-            nextShoppingItemId,
-            name = "Item $nextShoppingItemId"
-        ).toRecyclerItem()
-        nextShoppingItemId -= 1
+        val blankShoppingItem = ShoppingItem().toRecyclerItem()
 
         val items = _data.value
         items?.add(blankShoppingItem)
@@ -48,6 +48,22 @@ class ShoppingListViewModel : ViewModel() {
 
         if (store?.name.isNullOrBlank() || store?.name.isNullOrEmpty()) {
             _storeError.value = "Store can't be empty"
+        } else {
+
+            val shoppingItems =
+                _data.value?.map {
+                    it.data as ShoppingItem
+                }
+            val compositeDisposable = saveShoppingJob.persistLocally(
+                store!!,
+                shoppingItems!!,
+                shoppingDate.value!!
+            )
+                .subscribeOn(SchedulerProvider.DEFAULT_NETWORK)
+                .observeOn(SchedulerProvider.DEFAULT_MAIN)
+                .subscribe {
+                    onShoppingComplete.call()
+                }
         }
     }
 

@@ -1,10 +1,8 @@
 package com.kinich49.itemtracker.models.database.daos
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.kinich49.itemtracker.models.database.Brand
 import com.kinich49.itemtracker.models.database.Item
 import com.kinich49.itemtracker.models.database.relations.CompositeItem
 
@@ -12,23 +10,25 @@ import com.kinich49.itemtracker.models.database.relations.CompositeItem
 interface ItemDao {
 
     @Query(
-        "SELECT it.name as item_name, it.id as item_id, " +
+        "SELECT it.name as item_name, it.id as item_id, it.state as item_state, " +
                 "it.brand_id as item_brand_id, it.category_id as item_category_id, " +
-                "br.id as brand_id, br.name as brand_name, " +
-                "ca.id as category_id, ca.name as category_name " +
+                "br.id as brand_id, br.name as brand_name, br.state as brand_state, " +
+                "ca.id as category_id, ca.name as category_name, " +
+                "ca.state as category_state " +
                 "FROM Items as it " +
                 "INNER JOIN Brands br " +
                 "ON br.id = it.brand_id " +
                 "INNER JOIN Categories ca " +
                 "ON ca.id = it.category_id"
     )
-    fun getAllItems(): LiveData<List<CompositeItem>>
+    fun getAllItems(): List<CompositeItem>
 
     @Query(
-        "SELECT it.name as item_name, it.id as item_id, " +
+        "SELECT it.name as item_name, it.id as item_id, it.state as item_state, " +
                 "it.brand_id as item_brand_id, it.category_id as item_category_id, " +
-                "br.id as brand_id, br.name as brand_name, " +
-                "ca.id as category_id, ca.name as category_name " +
+                "br.id as brand_id, br.name as brand_name, br.state as brand_state, " +
+                "ca.id as category_id, ca.name as category_name, " +
+                "ca.state as category_state " +
                 "FROM Items as it " +
                 "INNER JOIN Brands br " +
                 "ON br.id = it.brand_id " +
@@ -54,7 +54,7 @@ interface ItemDao {
 //    fun getItemBrandAndCategory(id: Long): LiveData<CompositeItem>
 
     @Insert
-    fun insert(item: Item)
+    fun insert(item: Item): Long
 
     @Insert
     fun insert(vararg item: Item)

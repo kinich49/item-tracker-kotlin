@@ -5,7 +5,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import com.kinich49.itemtracker.models.database.Brand
 import com.kinich49.itemtracker.models.database.Category
 import com.kinich49.itemtracker.models.database.relations.CategoryWithItems
 
@@ -19,7 +18,7 @@ interface CategoryDao {
     fun getCategoriesLike(name: String): List<Category>
 
     @Insert
-    fun insert(category: Category)
+    fun insert(category: Category): Long
 
     @Insert
     fun insert(vararg category: Category)

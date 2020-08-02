@@ -1,7 +1,7 @@
 package com.kinich49.itemtracker.models.view
 
 data class Item(
-    val id: Long,
+    val id: Long? = null,
     var brand: Brand? = null,
     var category: Category? = null,
     var name: String? = null

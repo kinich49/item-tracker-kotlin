@@ -7,7 +7,7 @@ import androidx.room.Embedded
 @DatabaseView(
     "SELECT si.id as shopping_item_id, " +
             "si.unit_price, si.currency, si.quantity, " +
-            "it.id as item_id, it.name as item_name" +
+            "it.id as item_id, it.name as item_name, it.state as item_state, " +
             "si.shopping_list_id " +
             "FROM Shopping_Items as si "
 )
