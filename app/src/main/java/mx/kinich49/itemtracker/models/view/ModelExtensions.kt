@@ -41,10 +41,11 @@ fun ShoppingItem.toDatabaseModel(
         "Quantity must be set"
     }
 
-    return mx.kinich49.itemtracker.models.database.ShoppingItem(
-        this.id, this.name!!,
-        this.quantity.toDouble(),
-        this.unitPrice.toInt() * 100,
-        shoppingListId, itemId, state
+        return mx.kinich49.itemtracker.models.database.ShoppingItem(
+            this.id, this.name!!,
+            this.quantity.toDouble(),
+            this.unit,
+            this.unitPrice.toInt() * 100,
+            shoppingListId, itemId, state
     )
 }

@@ -26,4 +26,10 @@ interface BrandDao {
 
     @Insert
     fun insert(vararg brand: Brand)
+
+    @Query("DELETE FROM Brands WHERE id = :id")
+    fun delete(id: Long)
+
+    @Query("UPDATE Brands SET state = 3 WHERE id = :id")
+    fun inactivate(id: Long)
 }

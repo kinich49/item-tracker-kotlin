@@ -12,7 +12,8 @@ import java.time.LocalDate
 import java.time.Month
 
 class ShoppingListViewModel(
-    private val saveShoppingJob: SaveShoppingJob
+    private val saveShoppingJob: SaveShoppingJob,
+    private val schedulerProvider: SchedulerProvider
 ) : ViewModel() {
 
     private val _data: MutableLiveData<MutableList<RecyclerItem>> = MutableLiveData()
@@ -59,8 +60,8 @@ class ShoppingListViewModel(
                 shoppingItems!!,
                 shoppingDate.value!!
             )
-                .subscribeOn(SchedulerProvider.DEFAULT_NETWORK)
-                .observeOn(SchedulerProvider.DEFAULT_MAIN)
+                .subscribeOn(schedulerProvider.networkScheduler())
+                .observeOn(schedulerProvider.mainScheduler())
                 .subscribe {
                     onShoppingComplete.call()
                 }

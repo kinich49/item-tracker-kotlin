@@ -16,6 +16,7 @@ import mx.kinich49.itemtracker.models.database.toView
 import mx.kinich49.itemtracker.models.view.Store
 import mx.kinich49.itemtracker.shoppigList.impl.SaveShoppingJobImpl
 import kotlinx.android.synthetic.main.blank_shopping_list_layout.*
+import mx.kinich49.itemtracker.remote.SchedulerProvider
 import java.time.LocalDate
 
 class BlankShoppingListActivity : AppCompatActivity() {
@@ -26,7 +27,7 @@ class BlankShoppingListActivity : AppCompatActivity() {
             db.shoppingListDao(), db.storeDao(), db.shoppingItemDao(),
             db.brandDao(), db.categoryDao(), db.itemDao()
         )
-        ShoppingListFactory(saveShoppingJob)
+        ShoppingListFactory(saveShoppingJob, SchedulerProvider.DEFAULT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

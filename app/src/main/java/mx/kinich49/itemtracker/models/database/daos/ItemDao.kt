@@ -58,4 +58,10 @@ interface ItemDao {
 
     @Insert
     fun insert(vararg item: Item)
+
+    @Query("DELETE FROM Items WHERE id = :id")
+    fun delete(id: Long)
+
+    @Query("UPDATE Items SET state = 3 WHERE id = :id")
+    fun inactivate(id: Long)
 }

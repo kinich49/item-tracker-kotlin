@@ -26,4 +26,10 @@ interface CategoryDao {
     @Transaction
     @Query("SELECT * FROM Categories WHERE id = :id")
     fun getCategoryWithItems(id: Long): LiveData<List<CategoryWithItems>>
+
+    @Query("DELETE FROM Categories WHERE id = :id")
+    fun delete(id: Long)
+
+    @Query("UPDATE Categories SET state = 3 WHERE id = :id")
+    fun inactivate(id: Long)
 }
