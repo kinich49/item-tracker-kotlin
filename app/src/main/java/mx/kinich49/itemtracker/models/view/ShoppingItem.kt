@@ -7,8 +7,7 @@ import mx.kinich49.itemtracker.R
 import java.text.DecimalFormat
 
 class ShoppingItem(
-    var id: Long? = null,
-    var name: String? = null
+    var id: Long? = null
 ) : BaseObservable() {
 
     @get: Bindable
@@ -32,7 +31,7 @@ class ShoppingItem(
         set(value) {
             field = value
             updateTotalPrice()
-            notifyPropertyChanged(BR.quantity)
+            //notifyPropertyChanged(BR.quantity)
         }
 
     @get: Bindable
@@ -63,7 +62,16 @@ class ShoppingItem(
             this.brand = value?.brand
             this.category = value?.category
             this.name = value?.name
+            notifyPropertyChanged(BR.item)
+            notifyPropertyChanged(BR.name)
         }
+
+    @get: Bindable
+    var name: String? = null
+    set(value) {
+        field = value
+        notifyPropertyChanged(BR.name)
+    }
 
     private fun updateTotalPrice() {
         if (unitPrice.isNotEmpty() && quantity.isNotEmpty()) {

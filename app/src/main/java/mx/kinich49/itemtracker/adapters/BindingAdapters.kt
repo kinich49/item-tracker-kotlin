@@ -20,7 +20,7 @@ fun setRecyclerViewItems(
         adapter = RecyclerViewAdapter()
         recyclerView.adapter = adapter
     }
-    adapter.updateData(items.orEmpty())
+        adapter.updateData(items.orEmpty())
 }
 
 @InverseBindingAdapter(attribute = "app:item", event = "")

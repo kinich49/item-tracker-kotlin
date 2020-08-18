@@ -50,7 +50,6 @@ class ShoppingListViewModel(
         if (store?.name.isNullOrBlank() || store?.name.isNullOrEmpty()) {
             _storeError.value = "Store can't be empty"
         } else {
-
             val shoppingItems =
                 _data.value?.map {
                     it.data as ShoppingItem
