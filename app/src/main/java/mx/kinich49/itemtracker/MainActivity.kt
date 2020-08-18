@@ -22,12 +22,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-//        val shoppingListDao = ItemTrackerDatabase.getDatabase(this).shoppingListDao()
-
-//        shoppingListDao.getliveDataPendingShoppingLists().observe(this, Observer {
-//            Timber.tag("Test").d(it.toString())
-//        })
-
 //        App.getDownloadSync(this)
 //            .downloadData()
 //            .subscribeOn(SchedulerProvider.DEFAULT.networkScheduler())
