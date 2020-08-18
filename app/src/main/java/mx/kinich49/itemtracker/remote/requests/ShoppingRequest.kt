@@ -19,7 +19,7 @@ data class ShoppingItemRequest(
     val brand: BrandRequest?,
     val category: CategoryRequest,
     val mobileItemId: Long?,
-    val mobileId: Long?
+    val shoppingItemMobileId: Long
 )
 
 data class BrandRequest(val id: Long?, val name: String, val mobileId: Long?)

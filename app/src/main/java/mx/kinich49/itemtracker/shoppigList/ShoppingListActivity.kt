@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.work.*
 import mx.kinich49.itemtracker.ItemTrackerDatabase
 import mx.kinich49.itemtracker.R
 import mx.kinich49.itemtracker.adapters.AutoSuggestAdapter
@@ -16,6 +17,7 @@ import mx.kinich49.itemtracker.models.database.toView
 import mx.kinich49.itemtracker.models.view.Store
 import mx.kinich49.itemtracker.shoppigList.impl.SaveShoppingJobImpl
 import kotlinx.android.synthetic.main.blank_shopping_list_layout.*
+import mx.kinich49.itemtracker.models.sync.SyncWorker
 import mx.kinich49.itemtracker.remote.SchedulerProvider
 import java.time.LocalDate
 
@@ -81,6 +83,16 @@ class ShoppingListActivity : AppCompatActivity() {
         }
 
         viewModel.onShoppingComplete.observe(this, Observer {
+            val workRequest = OneTimeWorkRequestBuilder<SyncWorker>()
+                .setConstraints(
+                    Constraints.Builder()
+                        .setRequiredNetworkType(NetworkType.CONNECTED)
+                        .build()
+                )
+                .addTag("syncWork")
+                .build()
+
+            WorkManager.getInstance(this).enqueue(workRequest)
             setResult(Activity.RESULT_OK)
             finish()
         })

@@ -7,6 +7,10 @@ import java.lang.reflect.Type
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+@Deprecated(
+    "This class can't serialize",
+    ReplaceWith("LocalDateTypeAdapter")
+)
 class LocalDateDeserializer : JsonDeserializer<LocalDate> {
 
     override fun deserialize(

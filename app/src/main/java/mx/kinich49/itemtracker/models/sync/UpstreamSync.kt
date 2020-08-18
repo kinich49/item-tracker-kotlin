@@ -15,14 +15,14 @@ import mx.kinich49.itemtracker.remote.response.toDBModel
 class UpstreamSync(
     private val shoppingListDao: ShoppingListDao,
     private val shoppingItemDao: ShoppingItemDao,
-    private val shoppingListService: ShoppingListService,
     private val brandDao: BrandDao,
     private val categoryDao: CategoryDao,
     private val storeDao: StoreDao,
-    private val itemDao: ItemDao
+    private val itemDao: ItemDao,
+    private val shoppingListService: ShoppingListService
 ) {
 
-    fun uploadPendingShoppingLists(): Completable {
+    fun sync(): Completable {
         return loadPendingShoppingLists()
             .flatMapSingle { list -> Single.defer { uploadPendingShoppingList(list) } }
             .flatMapCompletable { response -> Completable.defer { updateLocalDB(response) } }
@@ -84,6 +84,15 @@ class UpstreamSync(
                     storeDao.insert(it)
                 }
 
+            response
+                .apply {
+                    shoppingListDao.inactivate(this.mobileId!!)
+                }
+                .toDBModel()
+                .let {
+                    shoppingListDao.insert(it)
+                }
+
             for (shoppingItem in response.shoppingItems) {
                 val item = shoppingItem.item
 
@@ -132,15 +141,6 @@ class UpstreamSync(
                         shoppingItemDao.insert(it)
                     }
             }
-
-            response
-                .apply {
-                    shoppingListDao.inactivate(this.mobileId!!)
-                }
-                .toDBModel()
-                .let {
-                    shoppingListDao.insert(it)
-                }
 
             emitter.onComplete()
         }

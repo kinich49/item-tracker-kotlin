@@ -42,6 +42,18 @@ interface ShoppingListDao {
     )
     fun getPendingShoppingLists(): List<CompositeShoppingList>
 
+    @Transaction
+    @Query(
+        "SELECT sl.id as shopping_list_id, sl.shopping_date, " +
+                "sl.state as shopping_list_state, " +
+                "st.id as store_id, st.name as store_name, st.state as store_state " +
+                "FROM Shopping_Lists as sl " +
+                "INNER JOIN Stores st " +
+                "ON sl.store_id = st.id " +
+                "WHERE sl.state = 1"
+    )
+    fun getliveDataPendingShoppingLists(): LiveData<List<CompositeShoppingList>>
+
     @Insert
     fun insert(shoppingList: ShoppingList): Long
 

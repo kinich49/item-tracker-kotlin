@@ -21,8 +21,9 @@ fun ItemResponse.toDBModel(): Item {
 
 fun ShoppingItemResponse.toDBModel(): ShoppingItem {
     return ShoppingItem(
-        this.id, this.currency, this.quantity, this.unit,
-        this.unitPrice, this.shoppingListId, this.item.id
+        this.id, this.quantity, this.unit,
+        this.unitPrice, this.shoppingListId,
+        this.item.id, this.currency
     )
 }
 

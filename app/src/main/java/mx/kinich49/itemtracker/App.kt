@@ -3,14 +3,18 @@ package mx.kinich49.itemtracker
 import android.app.Application
 import android.content.Context
 import android.util.Base64
+import androidx.work.Configuration
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import mx.kinich49.itemtracker.factories.ItemTrackerWorkerFactory
 import mx.kinich49.itemtracker.models.sync.DBDownloadSync
+import mx.kinich49.itemtracker.models.sync.UpstreamSync
 import mx.kinich49.itemtracker.remote.*
 import mx.kinich49.itemtracker.remote.deserializers.LocalDateDeserializer
 import mx.kinich49.itemtracker.remote.interceptors.AuthorizationInterceptor
+import mx.kinich49.itemtracker.remote.typeadapters.LocalDateTypeAdapter
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -20,7 +24,7 @@ import timber.log.Timber
 import java.time.LocalDate
 
 
-class App : Application() {
+class App : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
@@ -65,15 +69,27 @@ class App : Application() {
         }
 
         fun getDownloadSync(context: Context): DBDownloadSync {
+            val db = ItemTrackerDatabase.getDatabase(context)
+
             return DBDownloadSync(
                 brandService, categoryService, itemService,
                 storeService, shoppingListService, shoppingItemService,
-                ItemTrackerDatabase.getDatabase(context).brandDao(),
-                ItemTrackerDatabase.getDatabase(context).categoryDao(),
-                ItemTrackerDatabase.getDatabase(context).itemDao(),
-                ItemTrackerDatabase.getDatabase(context).storeDao(),
-                ItemTrackerDatabase.getDatabase(context).shoppingListDao(),
-                ItemTrackerDatabase.getDatabase(context).shoppingItemDao()
+                db.brandDao(),
+                db.categoryDao(),
+                db.itemDao(),
+                db.storeDao(),
+                db.shoppingListDao(),
+                db.shoppingItemDao()
+            )
+        }
+
+        fun getUploadSync(context: Context): UpstreamSync {
+            val db = ItemTrackerDatabase.getDatabase(context)
+
+            return UpstreamSync(
+                db.shoppingListDao(), db.shoppingItemDao(),
+                db.brandDao(), db.categoryDao(), db.storeDao(), db.itemDao(),
+                App.shoppingListService
             )
         }
 
@@ -101,10 +117,12 @@ class App : Application() {
                 .addInterceptor(httpInterceptor)
                 .addInterceptor(
                     AuthorizationInterceptor(
-                        "Basic ${Base64.encodeToString(
-                            credentials.toByteArray(),
-                            Base64.NO_WRAP
-                        )}"
+                        "Basic ${
+                            Base64.encodeToString(
+                                credentials.toByteArray(),
+                                Base64.NO_WRAP
+                            )
+                        }"
                     )
                 )
                 .addNetworkInterceptor(StethoInterceptor())
@@ -115,10 +133,17 @@ class App : Application() {
             GsonBuilder()
                 .registerTypeAdapter(
                     LocalDate::class.java,
-                    LocalDateDeserializer()
+                    LocalDateTypeAdapter().nullSafe()
                 )
                 .create()
         }
 
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        return Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.DEBUG)
+            .setWorkerFactory(ItemTrackerWorkerFactory(getUploadSync(this)))
+            .build()
     }
 }

@@ -3,8 +3,14 @@ package mx.kinich49.itemtracker
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import io.reactivex.CompletableObserver
+import io.reactivex.disposables.Disposable
 import mx.kinich49.itemtracker.shoppigList.ShoppingListActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import mx.kinich49.itemtracker.remote.SchedulerProvider
+import mx.kinich49.itemtracker.remote.impl.SchedulerProviderImpl
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,10 +22,16 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+//        val shoppingListDao = ItemTrackerDatabase.getDatabase(this).shoppingListDao()
+
+//        shoppingListDao.getliveDataPendingShoppingLists().observe(this, Observer {
+//            Timber.tag("Test").d(it.toString())
+//        })
+
 //        App.getDownloadSync(this)
 //            .downloadData()
-//            .subscribeOn(SchedulerProvider.DEFAULT_NETWORK)
-//            .observeOn(SchedulerProvider.DEFAULT_MAIN)
+//            .subscribeOn(SchedulerProvider.DEFAULT.networkScheduler())
+//            .observeOn(SchedulerProvider.DEFAULT.mainScheduler())
 //            .subscribe(object : CompletableObserver {
 //                override fun onComplete() {
 //                    Timber.d("On Complete")
