@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.blank_shopping_list_layout.*
 import mx.kinich49.itemtracker.remote.SchedulerProvider
 import java.time.LocalDate
 
-class BlankShoppingListActivity : AppCompatActivity() {
+class ShoppingListActivity : AppCompatActivity() {
 
     private val viewModel: ShoppingListViewModel by viewModels {
         val db = ItemTrackerDatabase.getDatabase(this)

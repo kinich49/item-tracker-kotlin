@@ -14,7 +14,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".shoppigList.BlankShoppingListActivity">
+        tools:context=".shoppigList.ShoppingListActivity">
 
         <TextView
             android:id="@+id/shopping_receipt_label"
