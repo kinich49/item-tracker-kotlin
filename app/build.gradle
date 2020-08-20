@@ -101,6 +101,18 @@ dependencies {
     // optional - RxJava2 support
     implementation "androidx.work:work-rxjava2:$workManagerVersion"
 
+    // Java language implementation
+    implementation "androidx.navigation:navigation-fragment:$navComponentVersion"
+    implementation "androidx.navigation:navigation-ui:$navComponentVersion"
+
+    // Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$navComponentVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navComponentVersion"
+
+    // Feature module Support
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$navComponentVersion"
+
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
