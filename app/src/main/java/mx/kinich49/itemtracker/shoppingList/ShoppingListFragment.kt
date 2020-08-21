@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.work.Constraints
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
@@ -93,7 +94,14 @@ class ShoppingListFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFact
                 .addTag("syncWork")
                 .build()
 
-            WorkManager.getInstance(context).enqueue(workRequest)
+            WorkManager.getInstance(context).
+                cancelAllWorkByTag("syncWork");
+
+            WorkManager.getInstance(context)
+                .enqueue(workRequest)
+
+            findNavController()
+                .popBackStack(R.id.homeFragment, false)
         })
         return binding.root
     }
