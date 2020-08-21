@@ -1,4 +1,4 @@
-package mx.kinich49.itemtracker.shoppigList
+package mx.kinich49.itemtracker.shoppingList
 
 import mx.kinich49.itemtracker.models.view.ShoppingItem
 import mx.kinich49.itemtracker.models.view.Store

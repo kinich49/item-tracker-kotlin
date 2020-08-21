@@ -6,15 +6,14 @@
 
         <variable
             name="viewModel"
-            type="mx.kinich49.itemtracker.shoppigList.ShoppingListViewModel" />
+            type="mx.kinich49.itemtracker.shoppingList.ShoppingListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".shoppigList.ShoppingListActivity">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/shopping_receipt_label"
@@ -111,6 +110,7 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="20dp"
             android:contentDescription="@string/add_shopping_item"
+            android:onClick="@{() -> viewModel.addBlankShoppingItem()}"
             android:src="@drawable/ic_add_24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

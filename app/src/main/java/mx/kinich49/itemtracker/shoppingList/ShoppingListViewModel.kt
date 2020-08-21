@@ -1,4 +1,4 @@
-package mx.kinich49.itemtracker.shoppigList
+package mx.kinich49.itemtracker.shoppingList
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

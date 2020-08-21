@@ -1,4 +1,4 @@
-package mx.kinich49.itemtracker.shoppigList.impl
+package mx.kinich49.itemtracker.shoppingList.impl
 
 import mx.kinich49.itemtracker.models.database.Item
 import mx.kinich49.itemtracker.models.database.ShoppingList
@@ -6,7 +6,7 @@ import mx.kinich49.itemtracker.models.database.daos.*
 import mx.kinich49.itemtracker.models.view.ShoppingItem
 import mx.kinich49.itemtracker.models.view.Store
 import mx.kinich49.itemtracker.models.view.toDatabaseModel
-import mx.kinich49.itemtracker.shoppigList.SaveShoppingJob
+import mx.kinich49.itemtracker.shoppingList.SaveShoppingJob
 import io.reactivex.Completable
 import java.time.LocalDate
 
