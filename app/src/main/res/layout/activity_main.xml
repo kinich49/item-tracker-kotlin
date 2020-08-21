@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="mx.kinich49.itemtracker.shoppingList.ShoppingListFragment"
+        android:name="mx.kinich49.itemtracker.home.HomeFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"

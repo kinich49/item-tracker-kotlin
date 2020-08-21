@@ -3,7 +3,7 @@ package mx.kinich49.itemtracker
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import mx.kinich49.itemtracker.remote.SchedulerProvider
-import mx.kinich49.itemtracker.shoppingList.ShoppingListFactory
+import mx.kinich49.itemtracker.shoppingList.ItemTrackerViewModelFactory
 import mx.kinich49.itemtracker.shoppingList.impl.SaveShoppingJobImpl
 
 class MainActivity : AppCompatActivity() {
@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
             db.storeDao(), db.shoppingItemDao(), db.brandDao(), db.categoryDao(),
             db.itemDao()
         )
-        ShoppingListFactory(saveShoppingJob, SchedulerProvider.DEFAULT)
+        ItemTrackerViewModelFactory(saveShoppingJob, SchedulerProvider.DEFAULT)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

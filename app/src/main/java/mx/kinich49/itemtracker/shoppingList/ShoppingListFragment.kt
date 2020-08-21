@@ -23,11 +23,11 @@ import mx.kinich49.itemtracker.models.sync.SyncWorker
 import mx.kinich49.itemtracker.models.view.Store
 import java.time.LocalDate
 
-class ShoppingListFragment(shoppingListFactory: ShoppingListFactory) :
+class ShoppingListFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFactory) :
     Fragment() {
 
     private val viewModel: ShoppingListViewModel by viewModels(factoryProducer = {
-        shoppingListFactory
+        itemTrackerViewModelFactory
     })
 
     private lateinit var binding: BlankShoppingListLayoutBinding
@@ -37,7 +37,7 @@ class ShoppingListFragment(shoppingListFactory: ShoppingListFactory) :
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<BlankShoppingListLayoutBinding>(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.blank_shopping_list_layout, container, false
         )
