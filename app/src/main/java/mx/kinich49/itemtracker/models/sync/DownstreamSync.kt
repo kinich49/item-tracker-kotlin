@@ -1,12 +1,12 @@
 package mx.kinich49.itemtracker.models.sync
 
+import io.reactivex.Completable
+import io.reactivex.Single
 import mx.kinich49.itemtracker.models.database.*
 import mx.kinich49.itemtracker.models.database.daos.*
 import mx.kinich49.itemtracker.remote.*
-import io.reactivex.Completable
-import io.reactivex.Single
 
-class DBDownloadSync(
+class DownstreamSync(
     private val brandService: BrandService,
     private val categoryService: CategoryService,
     private val itemService: ItemService,

@@ -5,15 +5,15 @@ import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import io.reactivex.Single
 
-class SyncWorker(
+class UpstreamSyncWorker(
     context: Context, workerParams: WorkerParameters,
-    private val upstreamSync: UpstreamSync
+    private val sync: UpstreamSync
 ) :
     RxWorker(context, workerParams) {
 
     override fun createWork(): Single<Result> {
-        return upstreamSync
-            .sync()
+        return sync
+            .uploadData()
             .andThen(Single.just(Result.success()))
             .onErrorReturnItem(Result.failure())
     }

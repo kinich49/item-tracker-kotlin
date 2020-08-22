@@ -1,4 +1,4 @@
-package mx.kinich49.itemtracker
+package mx.kinich49.itemtracker.factories
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory

@@ -3,7 +3,6 @@ package mx.kinich49.itemtracker.models.sync
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
-import mx.kinich49.itemtracker.models.database.ShoppingList
 import mx.kinich49.itemtracker.models.database.daos.*
 import mx.kinich49.itemtracker.models.database.relations.CompositeShoppingList
 import mx.kinich49.itemtracker.models.database.toRequest
@@ -22,7 +21,7 @@ class UpstreamSync(
     private val shoppingListService: ShoppingListService
 ) {
 
-    fun sync(): Completable {
+    fun uploadData(): Completable {
         return loadPendingShoppingLists()
             .flatMapSingle { list -> Single.defer { uploadPendingShoppingList(list) } }
             .flatMapCompletable { response -> Completable.defer { updateLocalDB(response) } }

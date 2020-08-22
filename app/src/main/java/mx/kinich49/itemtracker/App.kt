@@ -9,10 +9,9 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import mx.kinich49.itemtracker.factories.ItemTrackerWorkerFactory
-import mx.kinich49.itemtracker.models.sync.DBDownloadSync
+import mx.kinich49.itemtracker.models.sync.DownstreamSync
 import mx.kinich49.itemtracker.models.sync.UpstreamSync
 import mx.kinich49.itemtracker.remote.*
-import mx.kinich49.itemtracker.remote.deserializers.LocalDateDeserializer
 import mx.kinich49.itemtracker.remote.interceptors.AuthorizationInterceptor
 import mx.kinich49.itemtracker.remote.typeadapters.LocalDateTypeAdapter
 import okhttp3.OkHttpClient
@@ -68,10 +67,10 @@ class App : Application(), Configuration.Provider {
                 .create(ShoppingListService::class.java)
         }
 
-        fun getDownloadSync(context: Context): DBDownloadSync {
+        fun getDownstreamSync(context: Context): DownstreamSync {
             val db = ItemTrackerDatabase.getDatabase(context)
 
-            return DBDownloadSync(
+            return DownstreamSync(
                 brandService, categoryService, itemService,
                 storeService, shoppingListService, shoppingItemService,
                 db.brandDao(),
@@ -83,13 +82,13 @@ class App : Application(), Configuration.Provider {
             )
         }
 
-        fun getUploadSync(context: Context): UpstreamSync {
+        fun getUpstreamSync(context: Context): UpstreamSync {
             val db = ItemTrackerDatabase.getDatabase(context)
 
             return UpstreamSync(
                 db.shoppingListDao(), db.shoppingItemDao(),
                 db.brandDao(), db.categoryDao(), db.storeDao(), db.itemDao(),
-                App.shoppingListService
+                shoppingListService
             )
         }
 
@@ -141,9 +140,11 @@ class App : Application(), Configuration.Provider {
     }
 
     override fun getWorkManagerConfiguration(): Configuration {
+        val upstreamSync = getUpstreamSync(this)
+        val downstreamSync = getDownstreamSync(this)
         return Configuration.Builder()
             .setMinimumLoggingLevel(android.util.Log.DEBUG)
-            .setWorkerFactory(ItemTrackerWorkerFactory(getUploadSync(this)))
+            .setWorkerFactory(ItemTrackerWorkerFactory(upstreamSync, downstreamSync))
             .build()
     }
 }

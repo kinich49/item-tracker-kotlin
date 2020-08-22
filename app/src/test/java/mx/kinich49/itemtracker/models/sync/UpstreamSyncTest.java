@@ -86,7 +86,7 @@ public class UpstreamSyncTest {
                 .thenReturn(Single.just(new JsonApi<>(data.second)));
 
         //when
-        TestObserver<Void> testObserver = subject.sync()
+        TestObserver<Void> testObserver = subject.uploadData()
                 .test();
 
         //then
