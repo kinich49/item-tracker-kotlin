@@ -2,10 +2,12 @@ package mx.kinich49.itemtracker.adapters
 
 import android.view.View
 import android.widget.AdapterView
+import android.widget.Button
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
+import mx.kinich49.itemtracker.DataInitializationState
 import mx.kinich49.itemtracker.models.view.RecyclerItem
 import mx.kinich49.itemtracker.models.view.Store
 import mx.kinich49.itemtracker.views.AutoSuggestView
@@ -20,7 +22,15 @@ fun setRecyclerViewItems(
         adapter = RecyclerViewAdapter()
         recyclerView.adapter = adapter
     }
-        adapter.updateData(items.orEmpty())
+    adapter.updateData(items.orEmpty())
+}
+
+@BindingAdapter("dataState")
+fun setEnabled(
+    button: Button,
+    initState: DataInitializationState?
+) {
+    button.isEnabled = initState?.canAddData ?: false
 }
 
 @InverseBindingAdapter(attribute = "app:item", event = "")

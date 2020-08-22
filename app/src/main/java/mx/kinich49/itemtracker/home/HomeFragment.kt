@@ -1,5 +1,6 @@
 package mx.kinich49.itemtracker.home
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +11,12 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import mx.kinich49.itemtracker.Initialized
-import mx.kinich49.itemtracker.NotInitialized
+import mx.kinich49.itemtracker.DataInitializationState
+import mx.kinich49.itemtracker.InProgress
 import mx.kinich49.itemtracker.R
+import mx.kinich49.itemtracker.Success
 import mx.kinich49.itemtracker.databinding.HomeLayoutBinding
 import mx.kinich49.itemtracker.shoppingList.ItemTrackerViewModelFactory
-import timber.log.Timber
 
 class HomeFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFactory) : Fragment() {
 
@@ -36,33 +37,58 @@ class HomeFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFactory) : F
             inflater,
             R.layout.home_layout, container, false
         )
-
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.addListEvent.observe(viewLifecycleOwner, Observer {
             findNavController().navigate(R.id.action_homeFragment_to_shoppingListFragment)
         })
 
-        viewModel.dataInitializationState.observe(viewLifecycleOwner, Observer { initState ->
+        viewModel.dataInitState.observe(viewLifecycleOwner, Observer { initState ->
             when (initState) {
-                is NotInitialized -> {
+                is InProgress.Enqueued -> {
                     snackbar = Snackbar.make(
                         binding.root,
-                        initState.error,
+                        initState.message,
                         Snackbar.LENGTH_INDEFINITE
                     )
+                    snackbar?.setAction(R.string.cancel) {
+                        viewModel.onCancelEnqueuedInitialization()
+                    }
                     snackbar?.show()
                 }
-                is Initialized -> {
-                    Timber.tag("TEST").d("All good")
-                    snackbar?.takeIf {
-                        it.isShown
-                    }?.dismiss()
+
+                is Success.DataDownloaded, Success.NoData -> {
+                    snackbar?.dismiss()
+                }
+
+                is InProgress.Downloading -> {
+                    snackbar?.dismiss()
+                    snackbar =
+                        Snackbar.make(binding.root, initState.message, Snackbar.LENGTH_INDEFINITE)
+
+                    snackbar?.show()
+                }
+                is DataInitializationState.Error -> {
+                    snackbar?.dismiss()
+                    AlertDialog.Builder(context)
+                        .setMessage(initState.errorRes)
+                        .setNegativeButton(R.string.dismiss) { dialog, _ ->
+                            dialog.dismiss()
+                        }
+                        .setNeutralButton(R.string.cancel) { dialog, _ ->
+                            viewModel.onCancelEnqueuedInitialization()
+                            dialog.dismiss()
+                        }
+                        .setPositiveButton(R.string.retry) { dialog, _ ->
+                            viewModel.onRetryFailedInitialization()
+                            dialog.dismiss()
+                        }
+                        .show()
                 }
             }
         })
