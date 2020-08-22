@@ -4,7 +4,6 @@ import androidx.annotation.StringRes
 
 sealed class DataInitializationState(val canAddData: Boolean) {
     data class Error(
-        @StringRes val errorRes: Int = R.string.something_went_wrong,
         val errorMessage: String? = null
     ) : DataInitializationState(false)
 
@@ -14,6 +13,7 @@ sealed class DataInitializationState(val canAddData: Boolean) {
 sealed class Success : DataInitializationState(true) {
     object DataDownloaded : Success()
     object NoData : Success()
+    object NoInfo : Success()
 }
 
 sealed class InProgress : DataInitializationState(false) {

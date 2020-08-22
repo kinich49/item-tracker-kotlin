@@ -42,9 +42,9 @@ class HomeViewModel(private val workManager: WorkManager) : ViewModel() {
                     _dataInitState.value = DataInitializationState.Error()
                 }
             }
+        } else {
+            _dataInitState.value = Success.NoInfo
         }
-
-
     }
 
     init {
@@ -59,6 +59,10 @@ class HomeViewModel(private val workManager: WorkManager) : ViewModel() {
 
     fun onCancelEnqueuedInitialization() {
         workManager.cancelUniqueWork("Init Local Database")
+    }
+
+    fun onCancelFailedInitialization() {
+        workManager.pruneWork()
     }
 
     fun onRetryFailedInitialization() {

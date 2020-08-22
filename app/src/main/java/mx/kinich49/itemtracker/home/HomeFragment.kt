@@ -76,12 +76,10 @@ class HomeFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFactory) : F
                 is DataInitializationState.Error -> {
                     snackbar?.dismiss()
                     AlertDialog.Builder(context)
-                        .setMessage(initState.errorRes)
-                        .setNegativeButton(R.string.dismiss) { dialog, _ ->
-                            dialog.dismiss()
-                        }
+                        .setTitle(R.string.something_went_wrong)
+                        .setMessage(R.string.retry_or_cancel_message)
                         .setNeutralButton(R.string.cancel) { dialog, _ ->
-                            viewModel.onCancelEnqueuedInitialization()
+                            viewModel.onCancelFailedInitialization()
                             dialog.dismiss()
                         }
                         .setPositiveButton(R.string.retry) { dialog, _ ->
