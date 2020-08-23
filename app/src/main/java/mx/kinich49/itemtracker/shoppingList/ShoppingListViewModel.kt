@@ -14,8 +14,8 @@ class ShoppingListViewModel(
     private val schedulerProvider: SchedulerProvider
 ) : ViewModel() {
 
-    private val _data: MutableLiveData<MutableList<RecyclerItem>> = MutableLiveData()
-    val data: LiveData<MutableList<RecyclerItem>> = _data
+    private val _shoppingItems: MutableLiveData<MutableList<RecyclerItem>> = MutableLiveData()
+    val shoppingItems: LiveData<MutableList<RecyclerItem>> = _shoppingItems
 
     val store = MutableLiveData<Store>()
     val storeName = MutableLiveData<String>()
@@ -33,7 +33,7 @@ class ShoppingListViewModel(
 
     init {
         val items = ArrayList<RecyclerItem>()
-        _data.value = items
+        _shoppingItems.value = items
         store.value = Store()
         shoppingDate.value = LocalDate.of(2020, Month.MAY, 20)
         storeMediator.addSource(store) { value ->
@@ -55,9 +55,9 @@ class ShoppingListViewModel(
     fun addBlankShoppingItem() {
         val blankShoppingItem = ShoppingItem().toRecyclerItem()
 
-        val items = _data.value
+        val items = _shoppingItems.value
         items?.add(blankShoppingItem)
-        _data.value = items
+        _shoppingItems.value = items
     }
 
     fun saveList() {
@@ -67,7 +67,7 @@ class ShoppingListViewModel(
             _storeError.value = "Store can't be empty"
         } else {
             val shoppingItems =
-                _data.value?.map {
+                _shoppingItems.value?.map {
                     it.data as ShoppingItem
                 }
             val compositeDisposable = saveShoppingJob.persistLocally(
