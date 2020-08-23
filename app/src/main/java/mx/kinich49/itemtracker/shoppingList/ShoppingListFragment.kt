@@ -11,13 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import androidx.work.*
 import mx.kinich49.itemtracker.ItemTrackerDatabase
 import mx.kinich49.itemtracker.R
 import mx.kinich49.itemtracker.adapters.AutoSuggestAdapter
 import mx.kinich49.itemtracker.databinding.BlankShoppingListLayoutBinding
 import mx.kinich49.itemtracker.models.database.toView
-import mx.kinich49.itemtracker.models.sync.UpstreamSyncWorker
 import mx.kinich49.itemtracker.models.view.Store
 import java.time.LocalDate
 
@@ -82,29 +80,10 @@ class ShoppingListFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFact
         binding.storeInputField.setAdapter(storeAdapter)
 
         viewModel.onShoppingComplete.observe(this, Observer {
-            val workRequest = OneTimeWorkRequestBuilder<UpstreamSyncWorker>()
-                .setConstraints(
-                    Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build()
-                )
-                .build()
-
-            WorkManager.getInstance(context)
-                .enqueueUniqueWork(
-                    "upstreamSyncWork", ExistingWorkPolicy.REPLACE,
-                    workRequest
-                )
-
-            WorkManager.getInstance(context)
-                .getWorkInfosForUniqueWorkLiveData("Init Local Database")
-                .observe(viewLifecycleOwner, Observer {
-
-                })
-
             findNavController()
                 .popBackStack(R.id.homeFragment, false)
         })
+        
         return binding.root
     }
 }

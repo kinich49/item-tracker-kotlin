@@ -17,7 +17,7 @@ class ItemTrackerViewModelFactory(
 
         return when {
             modelClass.isAssignableFrom(ShoppingListViewModel::class.java)
-            -> ShoppingListViewModel(saveShoppingJob, schedulerProvider) as T
+            -> ShoppingListViewModel(saveShoppingJob, schedulerProvider, workManager) as T
             modelClass.isAssignableFrom(HomeViewModel::class.java)
             -> HomeViewModel(workManager) as T
             else -> throw IllegalArgumentException("Class $modelClass not implemented")

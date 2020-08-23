@@ -1,7 +1,9 @@
 package mx.kinich49.itemtracker.shoppingList
 
 import androidx.lifecycle.*
+import androidx.work.*
 import mx.kinich49.itemtracker.LiveEvent
+import mx.kinich49.itemtracker.models.sync.UpstreamSyncWorker
 import mx.kinich49.itemtracker.models.view.RecyclerItem
 import mx.kinich49.itemtracker.models.view.ShoppingItem
 import mx.kinich49.itemtracker.models.view.Store
@@ -11,7 +13,8 @@ import java.time.Month
 
 class ShoppingListViewModel(
     private val saveShoppingJob: SaveShoppingJob,
-    private val schedulerProvider: SchedulerProvider
+    private val schedulerProvider: SchedulerProvider,
+    private val workManager: WorkManager
 ) : ViewModel() {
 
     private val _shoppingItems: MutableLiveData<MutableList<RecyclerItem>> = MutableLiveData()
@@ -78,9 +81,23 @@ class ShoppingListViewModel(
                 .subscribeOn(schedulerProvider.networkScheduler())
                 .observeOn(schedulerProvider.mainScheduler())
                 .subscribe {
+                    val workRequest = OneTimeWorkRequestBuilder<UpstreamSyncWorker>()
+                        .setConstraints(
+                            Constraints.Builder()
+                                .setRequiredNetworkType(NetworkType.CONNECTED)
+                                .build()
+                        )
+                        .build()
+
+                    workManager
+                        .enqueueUniqueWork(
+                            "upstreamSyncWork", ExistingWorkPolicy.REPLACE,
+                            workRequest
+                        )
                     onShoppingComplete.call()
                 }
         }
+
     }
 
     fun onShoppingDateClick() {
@@ -94,5 +111,6 @@ class ShoppingListViewModel(
     override fun onCleared() {
         super.onCleared()
         storeMediator.removeObserver(mediatorStoreObserver)
+
     }
 }
