@@ -1,8 +1,6 @@
 package mx.kinich49.itemtracker.shoppingList
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import mx.kinich49.itemtracker.LiveEvent
 import mx.kinich49.itemtracker.models.view.RecyclerItem
 import mx.kinich49.itemtracker.models.view.ShoppingItem
@@ -19,21 +17,40 @@ class ShoppingListViewModel(
     private val _data: MutableLiveData<MutableList<RecyclerItem>> = MutableLiveData()
     val data: LiveData<MutableList<RecyclerItem>> = _data
 
-    val store: MutableLiveData<Store> = MutableLiveData()
+    val store = MutableLiveData<Store>()
+    val storeName = MutableLiveData<String>()
+    private val storeMediator = MediatorLiveData<Store>()
     private val _storeError: MutableLiveData<String> = MutableLiveData()
     val storeError: LiveData<String> = _storeError
 
     val shoppingDate: MutableLiveData<LocalDate> = MutableLiveData()
     private val _shoppingDateError: MutableLiveData<String> = MutableLiveData()
-    val shoppingDateError: LiveData<String> = _shoppingDateError
     val datePickerEvent: LiveEvent<LocalDate> = LiveEvent()
     val onShoppingComplete: LiveEvent<Unit> = LiveEvent()
+
+    private var mediatorStoreObserver = Observer<Store> {
+        //Empty observer to activate storeMediator
+    }
 
     init {
         val items = ArrayList<RecyclerItem>()
         _data.value = items
         store.value = Store()
         shoppingDate.value = LocalDate.of(2020, Month.MAY, 20)
+        storeMediator.addSource(store) { value ->
+            storeMediator.value = value
+        }
+
+        storeMediator.addSource(storeName) { value ->
+            val mediatorData = storeMediator.value
+            mediatorData?.name = value
+            mediatorData?.id = null
+            _storeError.value = null
+            storeMediator.value = mediatorData
+        }
+
+        storeMediator.observeForever(mediatorStoreObserver)
+
     }
 
     fun addBlankShoppingItem() {
@@ -45,7 +62,7 @@ class ShoppingListViewModel(
     }
 
     fun saveList() {
-        val store = store.value
+        val store = storeMediator.value
 
         if (store?.name.isNullOrBlank() || store?.name.isNullOrEmpty()) {
             _storeError.value = "Store can't be empty"
@@ -73,5 +90,10 @@ class ShoppingListViewModel(
 
     fun onShoppingDateSelected(value: LocalDate) {
         shoppingDate.value = value
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        storeMediator.removeObserver(mediatorStoreObserver)
     }
 }
