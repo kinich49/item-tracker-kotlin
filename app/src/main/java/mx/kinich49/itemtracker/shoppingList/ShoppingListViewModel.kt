@@ -24,7 +24,6 @@ class ShoppingListViewModel(
     val storeError: LiveData<String> = _storeError
 
     val shoppingDate: MutableLiveData<LocalDate> = MutableLiveData()
-    private val _shoppingDateError: MutableLiveData<String> = MutableLiveData()
     val datePickerEvent: LiveEvent<LocalDate> = LiveEvent()
     val onShoppingComplete: LiveEvent<Unit> = LiveEvent()
 
