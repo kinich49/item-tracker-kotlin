@@ -39,7 +39,7 @@ class ShoppingListFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFact
             inflater,
             R.layout.blank_shopping_list_layout, container, false
         )
-        binding.lifecycleOwner = activity
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
         val context = requireContext()
