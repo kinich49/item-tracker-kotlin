@@ -39,6 +39,7 @@ class ShoppingListFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFact
         )
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
+        binding.recyclerViewLifecycleOwner = viewLifecycleOwner
 
         val context = requireContext()
         val storeAdapter: AutoSuggestAdapter<Store> = AutoSuggestAdapter(context)
@@ -83,7 +84,7 @@ class ShoppingListFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFact
             findNavController()
                 .popBackStack(R.id.homeFragment, false)
         })
-        
+
         return binding.root
     }
 }

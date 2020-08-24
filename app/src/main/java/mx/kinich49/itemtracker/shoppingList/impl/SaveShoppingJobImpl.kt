@@ -8,6 +8,7 @@ import mx.kinich49.itemtracker.models.view.Store
 import mx.kinich49.itemtracker.models.view.toDatabaseModel
 import mx.kinich49.itemtracker.shoppingList.SaveShoppingJob
 import io.reactivex.Completable
+import mx.kinich49.itemtracker.models.view.ShoppingItemViewModel
 import java.time.LocalDate
 
 class SaveShoppingJobImpl(
@@ -21,7 +22,7 @@ class SaveShoppingJobImpl(
 
     override fun persistLocally(
         store: Store,
-        shoppingItems: List<ShoppingItem>,
+        shoppingItems: List<ShoppingItemViewModel>,
         shoppingDate: LocalDate
     ): Completable {
 
@@ -46,34 +47,40 @@ class SaveShoppingJobImpl(
             }
 
             shoppingItems.map {
+                //Get brand from mediatorLiveData
                 //Brand is optional, set null as brandId,
                 //or current brand
                 //or new id if brand does not exists in db
-                val brandId: Long? = it.brand?.id ?: it.brand?.toDatabaseModel()?.let { b ->
+                val brand = it.brandMediator.value
+                val brandId: Long? = brand?.id ?: brand?.toDatabaseModel()?.let { b ->
                     b.state = 1
                     brandDao.insert(b)
                 }
 
+                //Get category from mediatorLiveData
                 //Category is mandatory, set current category id
                 //or new id if category does not exists in db
+                val category = it.categoryMediator.value
                 val categoryId: Long =
-                    it.category?.id ?: it.category?.toDatabaseModel()!!.let { c ->
+                    category?.id ?: category?.toDatabaseModel()!!.let { c ->
                         c.state = 1
                         categoryDao.insert(c)
                     }
 
+                //Get item from mediatorLiveData
                 //Item is mandatory, set current item id
                 //or new id if item does not exits in db
+                val item = it.itemMediator.value
                 val itemId =
-                    it.item?.id ?: Item(
-                        name = it.name!!,
+                    item?.id ?: Item(
+                        name = it.itemName.value!!,
                         brandId = brandId,
                         categoryId = categoryId,
                         state = 1
                     )
-                        .let { item ->
-                            item.state = 1
-                            itemDao.insert(item)
+                        .let { newItem ->
+                            newItem.state = 1
+                            itemDao.insert(newItem)
                         }
 
 

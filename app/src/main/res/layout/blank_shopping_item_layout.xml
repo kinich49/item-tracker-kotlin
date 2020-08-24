@@ -6,7 +6,7 @@
 
         <variable
             name="shoppingItem"
-            type="mx.kinich49.itemtracker.models.view.ShoppingItem" />
+            type="mx.kinich49.itemtracker.models.view.ShoppingItemViewModel" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:text="@{shoppingItem.name}"
+                    android:text="@={shoppingItem.itemName}"
                     app:item="@={shoppingItem.item}" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,7 +60,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:text="@{shoppingItem.brand.name}"
+                    android:text="@={shoppingItem.brandName}"
                     app:item="@={shoppingItem.brand}" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none"
-                    android:text="@{shoppingItem.category.name}"
+                    android:text="@={shoppingItem.categoryName}"
                     app:item="@={shoppingItem.category}" />
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import mx.kinich49.itemtracker.ItemTrackerDatabase
 import mx.kinich49.itemtracker.models.database.toView
@@ -15,12 +16,20 @@ import mx.kinich49.itemtracker.models.view.RecyclerItem
 import kotlinx.android.synthetic.main.blank_shopping_item_layout.view.*
 import timber.log.Timber
 
-class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.BindingViewHolder>() {
+class RecyclerViewAdapter(private val lifecycleOwner: LifecycleOwner) :
+    RecyclerView.Adapter<RecyclerViewAdapter.BindingViewHolder>() {
 
     private val items = mutableListOf<RecyclerItem>()
 
-    class BindingViewHolder(val binding: ViewDataBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    class BindingViewHolder(
+        val binding: ViewDataBinding,
+        private val lifecycleOwner: LifecycleOwner
+    ) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.executePendingBindings()
+            binding.lifecycleOwner = lifecycleOwner
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -79,7 +88,7 @@ class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerViewAdapter.BindingView
         val unitAdapter = AutoSuggestAdapter(parent.context, units)
         binding.root.unit_field.setAdapter(unitAdapter)
 
-        return BindingViewHolder(binding)
+        return BindingViewHolder(binding, lifecycleOwner)
     }
 
     override fun getItemCount(): Int {

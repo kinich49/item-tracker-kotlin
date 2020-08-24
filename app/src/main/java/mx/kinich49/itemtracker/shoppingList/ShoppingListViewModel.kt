@@ -6,6 +6,7 @@ import mx.kinich49.itemtracker.LiveEvent
 import mx.kinich49.itemtracker.models.sync.UpstreamSyncWorker
 import mx.kinich49.itemtracker.models.view.RecyclerItem
 import mx.kinich49.itemtracker.models.view.ShoppingItem
+import mx.kinich49.itemtracker.models.view.ShoppingItemViewModel
 import mx.kinich49.itemtracker.models.view.Store
 import mx.kinich49.itemtracker.remote.SchedulerProvider
 import java.time.LocalDate
@@ -17,16 +18,17 @@ class ShoppingListViewModel(
     private val workManager: WorkManager
 ) : ViewModel() {
 
-    private val _shoppingItems: MutableLiveData<MutableList<RecyclerItem>> = MutableLiveData()
+    private val _shoppingItems: MutableLiveData<MutableList<RecyclerItem>> =
+        MutableLiveData(ArrayList(listOf(ShoppingItemViewModel().toRecyclerItem())))
     val shoppingItems: LiveData<MutableList<RecyclerItem>> = _shoppingItems
 
-    val store = MutableLiveData<Store>()
+    val store = MutableLiveData<Store>(Store())
     val storeName = MutableLiveData<String>()
     private val storeMediator = MediatorLiveData<Store>()
     private val _storeError: MutableLiveData<String> = MutableLiveData()
     val storeError: LiveData<String> = _storeError
 
-    val shoppingDate: MutableLiveData<LocalDate> = MutableLiveData()
+    val shoppingDate: MutableLiveData<LocalDate> = MutableLiveData(LocalDate.now())
     val datePickerEvent: LiveEvent<LocalDate> = LiveEvent()
     val onShoppingComplete: LiveEvent<Unit> = LiveEvent()
 
@@ -35,10 +37,6 @@ class ShoppingListViewModel(
     }
 
     init {
-        val items = ArrayList<RecyclerItem>()
-        _shoppingItems.value = items
-        store.value = Store()
-        shoppingDate.value = LocalDate.of(2020, Month.MAY, 20)
         storeMediator.addSource(store) { value ->
             storeMediator.value = value
         }
@@ -52,11 +50,10 @@ class ShoppingListViewModel(
         }
 
         storeMediator.observeForever(mediatorStoreObserver)
-
     }
 
     fun addBlankShoppingItem() {
-        val blankShoppingItem = ShoppingItem().toRecyclerItem()
+        val blankShoppingItem = ShoppingItemViewModel().toRecyclerItem()
 
         val items = _shoppingItems.value
         items?.add(blankShoppingItem)
@@ -71,7 +68,7 @@ class ShoppingListViewModel(
         } else {
             val shoppingItems =
                 _shoppingItems.value?.map {
-                    it.data as ShoppingItem
+                    it.data as ShoppingItemViewModel
                 }
             val compositeDisposable = saveShoppingJob.persistLocally(
                 store!!,

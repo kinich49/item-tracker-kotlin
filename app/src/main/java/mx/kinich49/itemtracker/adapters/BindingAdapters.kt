@@ -6,20 +6,22 @@ import android.widget.Button
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import mx.kinich49.itemtracker.DataInitializationState
 import mx.kinich49.itemtracker.models.view.RecyclerItem
 import mx.kinich49.itemtracker.models.view.Store
 import mx.kinich49.itemtracker.views.AutoSuggestView
 
-@BindingAdapter("items")
+@BindingAdapter("items", "recycler_view_lifecycle_owner")
 fun setRecyclerViewItems(
     recyclerView: RecyclerView,
-    items: List<RecyclerItem>?
+    items: List<RecyclerItem>?,
+    recyclerViewLifecycleOwner: LifecycleOwner
 ) {
     var adapter = recyclerView.adapter as? RecyclerViewAdapter
     if (adapter == null) {
-        adapter = RecyclerViewAdapter()
+        adapter = RecyclerViewAdapter(recyclerViewLifecycleOwner)
         recyclerView.adapter = adapter
     }
     adapter.updateData(items.orEmpty())

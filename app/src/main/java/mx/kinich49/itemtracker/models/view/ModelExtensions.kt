@@ -49,3 +49,29 @@ fun ShoppingItem.toDatabaseModel(
         shoppingListId, itemId, state = state
     )
 }
+
+fun ShoppingItemViewModel.toDatabaseModel(
+    shoppingListId: Long,
+    itemId: Long,
+    state: Int = 0
+): mx.kinich49.itemtracker.models.database.ShoppingItem {
+    val name = this.itemName.value
+    require(!name.isNullOrBlank()) {
+        "Item name must be set"
+    }
+    require(!this.unitPrice.isBlank()) {
+        "Unit price must be set"
+    }
+
+    require(!this.quantity.isBlank()) {
+        "Quantity must be set"
+    }
+
+    return mx.kinich49.itemtracker.models.database.ShoppingItem(
+        null,
+        this.quantity.toDouble(),
+        this.unit,
+        this.unitPrice.toInt() * 100,
+        shoppingListId, itemId, state = state
+    )
+}
