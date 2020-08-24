@@ -17,7 +17,7 @@ sealed class Success : DataInitializationState(true) {
 }
 
 sealed class InProgress : DataInitializationState(false) {
-    data class Enqueued(@StringRes val message: Int = R.string.waiting_internet_connection) :
+    data class Enqueued(@StringRes val message: Int = R.string.waiting_internet_connection_initial_data) :
         InProgress()
 
     data class Downloading(@StringRes val message: Int = R.string.sync_in_progress) :

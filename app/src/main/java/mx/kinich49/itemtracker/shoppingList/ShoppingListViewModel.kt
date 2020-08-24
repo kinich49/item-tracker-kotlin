@@ -88,7 +88,7 @@ class ShoppingListViewModel(
 
                     workManager
                         .enqueueUniqueWork(
-                            "upstreamSyncWork", ExistingWorkPolicy.REPLACE,
+                            "Upstream Sync Work", ExistingWorkPolicy.KEEP,
                             workRequest
                         )
                     onShoppingComplete.call()

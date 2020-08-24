@@ -44,10 +44,18 @@ class HomeFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFactory) : F
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeAddListEvent()
+        observeInitialData()
+        observeUpstreamSyncProcess()
+    }
+
+    private fun observeAddListEvent() {
         viewModel.addListEvent.observe(viewLifecycleOwner, Observer {
             findNavController().navigate(R.id.action_homeFragment_to_shoppingListFragment)
         })
+    }
 
+    private fun observeInitialData() {
         viewModel.dataInitState.observe(viewLifecycleOwner, Observer { initState ->
             when (initState) {
                 is InProgress.Enqueued -> {
@@ -77,13 +85,51 @@ class HomeFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFactory) : F
                     snackbar?.dismiss()
                     AlertDialog.Builder(context)
                         .setTitle(R.string.something_went_wrong)
-                        .setMessage(R.string.retry_or_cancel_message)
+                        .setMessage(R.string.retry_or_cancel_initial_data)
                         .setNeutralButton(R.string.cancel) { dialog, _ ->
                             viewModel.onCancelFailedInitialization()
                             dialog.dismiss()
                         }
                         .setPositiveButton(R.string.retry) { dialog, _ ->
                             viewModel.onRetryFailedInitialization()
+                            dialog.dismiss()
+                        }
+                        .show()
+                }
+            }
+        })
+    }
+
+    private fun observeUpstreamSyncProcess() {
+        viewModel.upstreamSyncState.observe(viewLifecycleOwner, Observer { initState ->
+            when (initState) {
+                is InProgress.Enqueued -> {
+                    snackbar = Snackbar.make(
+                        binding.root,
+                        initState.message,
+                        Snackbar.LENGTH_INDEFINITE
+                    )
+                    snackbar?.show()
+                }
+
+                is Success.DataDownloaded, Success.NoData -> {
+                    snackbar?.dismiss()
+                }
+
+                is InProgress.Downloading -> {
+                    snackbar?.dismiss()
+                    snackbar =
+                        Snackbar.make(binding.root, initState.message, Snackbar.LENGTH_INDEFINITE)
+
+                    snackbar?.show()
+                }
+                is DataInitializationState.Error -> {
+                    snackbar?.dismiss()
+                    AlertDialog.Builder(context)
+                        .setTitle(R.string.something_went_wrong)
+                        .setMessage(R.string.retry_upstream_sync)
+                        .setPositiveButton(R.string.retry) { dialog, _ ->
+                            viewModel.onRetryFailedUpstreamSync()
                             dialog.dismiss()
                         }
                         .show()
