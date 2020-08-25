@@ -7,13 +7,13 @@ import io.reactivex.Single
 
 class UpstreamSyncWorker(
     context: Context, workerParams: WorkerParameters,
-    private val sync: UpstreamSync
+    private val syncUseCase: ShoppingListSyncUseCase
 ) :
     RxWorker(context, workerParams) {
 
     override fun createWork(): Single<Result> {
-        return sync
-            .uploadData()
+        return syncUseCase
+            .execute()
             .andThen(Single.just(Result.success()))
             .onErrorReturnItem(Result.failure())
     }

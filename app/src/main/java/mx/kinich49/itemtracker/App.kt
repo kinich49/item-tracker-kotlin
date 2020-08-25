@@ -9,8 +9,8 @@ import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import mx.kinich49.itemtracker.factories.ItemTrackerWorkerFactory
-import mx.kinich49.itemtracker.models.sync.DownstreamSync
-import mx.kinich49.itemtracker.models.sync.UpstreamSync
+import mx.kinich49.itemtracker.models.database.daos.*
+import mx.kinich49.itemtracker.models.sync.*
 import mx.kinich49.itemtracker.remote.*
 import mx.kinich49.itemtracker.remote.interceptors.AuthorizationInterceptor
 import mx.kinich49.itemtracker.remote.typeadapters.LocalDateTypeAdapter
@@ -82,15 +82,37 @@ class App : Application(), Configuration.Provider {
             )
         }
 
-        fun getUpstreamSync(context: Context): UpstreamSync {
-            val db = ItemTrackerDatabase.getDatabase(context)
+        fun getUpstreamSync(
+            loadPendingShoppingListUseCase: LoadPendingShoppingListUseCase,
+            uploadPendingShoppingListUseCase: UploadPendingShoppingListUseCase,
+            updateLocalShoppingListUseCase: UpdateLocalShoppingListUseCase
+        ): ShoppingListSyncUseCase {
 
-            return UpstreamSync(
-                db.shoppingListDao(), db.shoppingItemDao(),
-                db.brandDao(), db.categoryDao(), db.storeDao(), db.itemDao(),
-                shoppingListService
+            return ShoppingListSyncUseCase(
+                loadPendingShoppingListUseCase,
+                uploadPendingShoppingListUseCase,
+                updateLocalShoppingListUseCase
             )
         }
+
+        fun getLoadPendingShoppingListUseCase(
+            shoppingListDao: ShoppingListDao,
+            shoppingItemDao: ShoppingItemDao
+        ) = LoadPendingShoppingListUseCase(shoppingListDao, shoppingItemDao)
+
+
+        fun getUploadPendingShoppingListUseCase(shoppingListService: ShoppingListService) =
+            UploadPendingShoppingListUseCase(shoppingListService)
+
+        fun getUpdateLocalShoppingListUseCase(
+            storeDao: StoreDao,
+            shoppingListDao: ShoppingListDao, brandDao: BrandDao, categoryDao: CategoryDao,
+            itemDao: ItemDao, shoppingItemDao: ShoppingItemDao
+        ) =
+            UpdateLocalShoppingListUseCase(
+                storeDao, shoppingListDao, brandDao, categoryDao, itemDao, shoppingItemDao
+            )
+
 
         private val retrofit: Retrofit by lazy {
             Retrofit.Builder()
@@ -140,7 +162,21 @@ class App : Application(), Configuration.Provider {
     }
 
     override fun getWorkManagerConfiguration(): Configuration {
-        val upstreamSync = getUpstreamSync(this)
+        val db = ItemTrackerDatabase.getDatabase(this)
+        val loadUseCase = getLoadPendingShoppingListUseCase(
+            db.shoppingListDao(),
+            db.shoppingItemDao()
+        )
+
+        val uploadUseCase = getUploadPendingShoppingListUseCase(
+            shoppingListService
+        )
+
+        val updateUseCase = getUpdateLocalShoppingListUseCase(
+            db.storeDao(), db.shoppingListDao(), db.brandDao(), db.categoryDao(),
+            db.itemDao(), db.shoppingItemDao()
+        )
+        val upstreamSync = getUpstreamSync(loadUseCase, uploadUseCase, updateUseCase)
         val downstreamSync = getDownstreamSync(this)
         return Configuration.Builder()
             .setMinimumLoggingLevel(android.util.Log.DEBUG)
