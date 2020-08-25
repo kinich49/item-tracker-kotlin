@@ -26,6 +26,7 @@ import mx.kinich49.itemtracker.models.database.daos.ShoppingListDao;
 import mx.kinich49.itemtracker.models.database.daos.StoreDao;
 import mx.kinich49.itemtracker.models.database.relations.CompositeShoppingItem;
 import mx.kinich49.itemtracker.models.database.relations.CompositeShoppingList;
+import mx.kinich49.itemtracker.models.sync.upstream.ShoppingListSyncUseCase;
 import mx.kinich49.itemtracker.remote.JsonApi;
 import mx.kinich49.itemtracker.remote.ShoppingListService;
 import mx.kinich49.itemtracker.remote.requests.ShoppingListRequest;

@@ -3,14 +3,12 @@ package mx.kinich49.itemtracker.shoppingList
 import androidx.lifecycle.*
 import androidx.work.*
 import mx.kinich49.itemtracker.LiveEvent
-import mx.kinich49.itemtracker.models.sync.UpstreamSyncWorker
+import mx.kinich49.itemtracker.models.sync.upstream.UpstreamSyncWorker
 import mx.kinich49.itemtracker.models.view.RecyclerItem
-import mx.kinich49.itemtracker.models.view.ShoppingItem
 import mx.kinich49.itemtracker.models.view.ShoppingItemViewModel
 import mx.kinich49.itemtracker.models.view.Store
 import mx.kinich49.itemtracker.remote.SchedulerProvider
 import java.time.LocalDate
-import java.time.Month
 
 class ShoppingListViewModel(
     private val saveShoppingJob: SaveShoppingJob,

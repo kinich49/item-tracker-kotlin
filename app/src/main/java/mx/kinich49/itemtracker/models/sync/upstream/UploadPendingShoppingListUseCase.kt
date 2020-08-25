@@ -1,4 +1,4 @@
-package mx.kinich49.itemtracker.models.sync
+package mx.kinich49.itemtracker.models.sync.upstream
 
 import io.reactivex.Single
 import mx.kinich49.itemtracker.models.database.relations.CompositeShoppingList

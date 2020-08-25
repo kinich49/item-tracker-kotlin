@@ -4,14 +4,14 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import mx.kinich49.itemtracker.models.sync.DownstreamSync
-import mx.kinich49.itemtracker.models.sync.DownstreamSyncWorker
-import mx.kinich49.itemtracker.models.sync.ShoppingListSyncUseCase
-import mx.kinich49.itemtracker.models.sync.UpstreamSyncWorker
+import mx.kinich49.itemtracker.models.sync.downstream.DownstreamSynUseCase
+import mx.kinich49.itemtracker.models.sync.downstream.DownstreamSyncWorker
+import mx.kinich49.itemtracker.models.sync.upstream.ShoppingListSyncUseCase
+import mx.kinich49.itemtracker.models.sync.upstream.UpstreamSyncWorker
 
 class ItemTrackerWorkerFactory(
     private val shoppingListSyncUseCase: ShoppingListSyncUseCase,
-    private val downstreamSync: DownstreamSync
+    private val downstreamSync: DownstreamSynUseCase
 ) : WorkerFactory() {
 
     override fun createWorker(

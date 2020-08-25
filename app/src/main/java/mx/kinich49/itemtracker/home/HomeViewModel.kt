@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.work.*
 import mx.kinich49.itemtracker.*
 import mx.kinich49.itemtracker.R
-import mx.kinich49.itemtracker.models.sync.DownstreamSyncWorker
-import mx.kinich49.itemtracker.models.sync.UpstreamSyncWorker
+import mx.kinich49.itemtracker.models.sync.downstream.DownstreamSyncWorker
+import mx.kinich49.itemtracker.models.sync.upstream.UpstreamSyncWorker
 
 class HomeViewModel(private val workManager: WorkManager) : ViewModel() {
 

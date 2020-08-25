@@ -10,7 +10,7 @@ import androidx.work.*
 import mx.kinich49.itemtracker.models.database.*
 import mx.kinich49.itemtracker.models.database.converters.Converters
 import mx.kinich49.itemtracker.models.database.daos.*
-import mx.kinich49.itemtracker.models.sync.DownstreamSyncWorker
+import mx.kinich49.itemtracker.models.sync.downstream.DownstreamSyncWorker
 import timber.log.Timber
 
 @Database(

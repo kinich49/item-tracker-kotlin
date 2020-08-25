@@ -1,18 +1,18 @@
-package mx.kinich49.itemtracker.models.sync
+package mx.kinich49.itemtracker.models.sync.downstream
 
 import android.content.Context
 import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import io.reactivex.Single
 
-class UpstreamSyncWorker(
-    context: Context, workerParams: WorkerParameters,
-    private val syncUseCase: ShoppingListSyncUseCase
-) :
-    RxWorker(context, workerParams) {
+class DownstreamSyncWorker(
+    context: Context,
+    params: WorkerParameters,
+    private val sync: DownstreamSynUseCase
+) : RxWorker(context, params) {
 
     override fun createWork(): Single<Result> {
-        return syncUseCase
+        return sync
             .execute()
             .andThen(Single.just(Result.success()))
             .onErrorReturnItem(Result.failure())
