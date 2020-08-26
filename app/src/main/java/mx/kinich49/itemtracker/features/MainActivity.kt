@@ -31,6 +31,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //Small trick to initialize Database as soon as user opens app
+        //DB initialization only happens after a query is executed
+        //And we want to check data state before this app is usable
         ItemTrackerDatabase.getDatabase(this)
             .userDao().getUserBy(1L).observe(this,
                 Observer {
