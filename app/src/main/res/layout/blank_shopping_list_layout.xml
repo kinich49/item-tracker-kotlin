@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="mx.kinich49.itemtracker.shoppingList.ShoppingListViewModel" />
+            type="mx.kinich49.itemtracker.features.shoppingList.ShoppingListViewModel" />
 
         <variable
             name="recyclerViewLifecycleOwner"
@@ -46,7 +46,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/shopping_receipt_label">
 
-            <mx.kinich49.itemtracker.views.AutoSuggestView
+            <mx.kinich49.itemtracker.features.shoppingList.models.AutoSuggestView
                 android:id="@+id/store_input_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

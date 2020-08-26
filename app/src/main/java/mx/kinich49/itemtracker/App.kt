@@ -1,19 +1,23 @@
 package mx.kinich49.itemtracker
 
 import android.app.Application
-import android.content.Context
 import android.util.Base64
 import androidx.work.Configuration
 import com.facebook.stetho.Stetho
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import mx.kinich49.itemtracker.factories.ItemTrackerWorkerFactory
-import mx.kinich49.itemtracker.models.sync.DownstreamSync
-import mx.kinich49.itemtracker.models.sync.UpstreamSync
-import mx.kinich49.itemtracker.remote.*
-import mx.kinich49.itemtracker.remote.interceptors.AuthorizationInterceptor
-import mx.kinich49.itemtracker.remote.typeadapters.LocalDateTypeAdapter
+import mx.kinich49.itemtracker.features.factories.ItemTrackerWorkerFactory
+import mx.kinich49.itemtracker.entities.database.daos.*
+import mx.kinich49.itemtracker.entities.usecases.sync.downstream.*
+import mx.kinich49.itemtracker.entities.usecases.sync.upstream.LoadPendingShoppingListUseCase
+import mx.kinich49.itemtracker.entities.usecases.sync.upstream.ShoppingListSyncUseCase
+import mx.kinich49.itemtracker.entities.usecases.sync.upstream.UpdateLocalShoppingListUseCase
+import mx.kinich49.itemtracker.entities.usecases.sync.upstream.UploadPendingShoppingListUseCase
+import mx.kinich49.itemtracker.entities.apis.interceptors.AuthorizationInterceptor
+import mx.kinich49.itemtracker.entities.apis.services.*
+import mx.kinich49.itemtracker.entities.apis.typeadapters.LocalDateTypeAdapter
+import mx.kinich49.itemtracker.entities.database.ItemTrackerDatabase
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -33,6 +37,39 @@ class App : Application(), Configuration.Provider {
             Stetho.initializeWithDefaults(this);
         }
 
+    }
+
+    override fun getWorkManagerConfiguration(): Configuration {
+        val db = ItemTrackerDatabase.getDatabase(this)
+        val loadUseCase = getLoadPendingShoppingListUseCase(
+            db.shoppingListDao(),
+            db.shoppingItemDao()
+        )
+
+        val uploadUseCase = getUploadPendingShoppingListUseCase(shoppingListService)
+
+        val updateUseCase = getUpdateLocalShoppingListUseCase(
+            db.storeDao(), db.shoppingListDao(), db.brandDao(), db.categoryDao(),
+            db.itemDao(), db.shoppingItemDao()
+        )
+        val upstreamSync = getShoppingListSyncUseCase(
+            loadUseCase, uploadUseCase, updateUseCase
+        )
+
+        val brandUseCase = DownloadBrandsUseCase(brandService, db.brandDao())
+        val categoriesUseCase = DownloadCategoriesUseCase(categoryService, db.categoryDao())
+        val storesUseCase = DownloadStoresUseCase(storeService, db.storeDao())
+        val itemsUseCase = DownloadItemsUseCase(itemService, db.itemDao())
+
+        val downstreamSync = getDownstreamSync(
+            brandUseCase, categoriesUseCase,
+            storesUseCase, itemsUseCase
+        )
+
+        return Configuration.Builder()
+            .setMinimumLoggingLevel(android.util.Log.DEBUG)
+            .setWorkerFactory(ItemTrackerWorkerFactory(upstreamSync, downstreamSync))
+            .build()
     }
 
     companion object ServiceFactory {
@@ -67,30 +104,45 @@ class App : Application(), Configuration.Provider {
                 .create(ShoppingListService::class.java)
         }
 
-        fun getDownstreamSync(context: Context): DownstreamSync {
-            val db = ItemTrackerDatabase.getDatabase(context)
+        fun getDownstreamSync(
+            brandsUseCase: DownloadBrandsUseCase,
+            categoriesUseCase: DownloadCategoriesUseCase,
+            storesUseCase: DownloadStoresUseCase,
+            itemsUseCase: DownloadItemsUseCase
+        ) = DownstreamSynUseCase(
+            brandsUseCase, categoriesUseCase, storesUseCase, itemsUseCase
+        )
 
-            return DownstreamSync(
-                brandService, categoryService, itemService,
-                storeService, shoppingListService, shoppingItemService,
-                db.brandDao(),
-                db.categoryDao(),
-                db.itemDao(),
-                db.storeDao(),
-                db.shoppingListDao(),
-                db.shoppingItemDao()
+
+        fun getShoppingListSyncUseCase(
+            loadPendingShoppingListUseCase: LoadPendingShoppingListUseCase,
+            uploadPendingShoppingListUseCase: UploadPendingShoppingListUseCase,
+            updateLocalShoppingListUseCase: UpdateLocalShoppingListUseCase
+        ) = ShoppingListSyncUseCase(
+            loadPendingShoppingListUseCase,
+            uploadPendingShoppingListUseCase,
+            updateLocalShoppingListUseCase
+        )
+
+
+        fun getLoadPendingShoppingListUseCase(
+            shoppingListDao: ShoppingListDao,
+            shoppingItemDao: ShoppingItemDao
+        ) = LoadPendingShoppingListUseCase(shoppingListDao, shoppingItemDao)
+
+
+        fun getUploadPendingShoppingListUseCase(shoppingListService: ShoppingListService) =
+            UploadPendingShoppingListUseCase(shoppingListService)
+
+        fun getUpdateLocalShoppingListUseCase(
+            storeDao: StoreDao,
+            shoppingListDao: ShoppingListDao, brandDao: BrandDao, categoryDao: CategoryDao,
+            itemDao: ItemDao, shoppingItemDao: ShoppingItemDao
+        ) =
+            UpdateLocalShoppingListUseCase(
+                storeDao, shoppingListDao, brandDao, categoryDao, itemDao, shoppingItemDao
             )
-        }
 
-        fun getUpstreamSync(context: Context): UpstreamSync {
-            val db = ItemTrackerDatabase.getDatabase(context)
-
-            return UpstreamSync(
-                db.shoppingListDao(), db.shoppingItemDao(),
-                db.brandDao(), db.categoryDao(), db.storeDao(), db.itemDao(),
-                shoppingListService
-            )
-        }
 
         private val retrofit: Retrofit by lazy {
             Retrofit.Builder()
@@ -137,14 +189,5 @@ class App : Application(), Configuration.Provider {
                 .create()
         }
 
-    }
-
-    override fun getWorkManagerConfiguration(): Configuration {
-        val upstreamSync = getUpstreamSync(this)
-        val downstreamSync = getDownstreamSync(this)
-        return Configuration.Builder()
-            .setMinimumLoggingLevel(android.util.Log.DEBUG)
-            .setWorkerFactory(ItemTrackerWorkerFactory(upstreamSync, downstreamSync))
-            .build()
     }
 }
