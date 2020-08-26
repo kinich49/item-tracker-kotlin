@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="mx.kinich49.itemtracker.home.HomeFragment"
+        android:name="mx.kinich49.itemtracker.features.home.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_shoppingListFragment"
@@ -13,6 +13,6 @@
     </fragment>
     <fragment
         android:id="@+id/shoppingListFragment"
-        android:name="mx.kinich49.itemtracker.shoppingList.ShoppingListFragment"
+        android:name="mx.kinich49.itemtracker.features.shoppingList.ShoppingListFragment"
         android:label="ShoppingListFragment" />
 </navigation>

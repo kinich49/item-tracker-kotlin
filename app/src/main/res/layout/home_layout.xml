@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="mx.kinich49.itemtracker.home.HomeViewModel" />
+            type="mx.kinich49.itemtracker.features.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
