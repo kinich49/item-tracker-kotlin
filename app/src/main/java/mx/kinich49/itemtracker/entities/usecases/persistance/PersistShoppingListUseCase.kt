@@ -25,13 +25,16 @@ class PersistShoppingListUseCase(
     ): Completable {
 
         return Completable.create { emitter ->
-            store.toDatabaseModel()
 
             //get current store id if already exists
             //or insert current store and retrieve id
-            val storeMobileId: Long = store.id ?: store.toDatabaseModel().let {
-                it.state = 1
-                storeDao.insert(it)
+            val storeMobileId = if (store.id == null) {
+                store.toDatabaseModel().let {
+                    it.state = 1
+                    storeDao.insert(it)
+                }
+            } else {
+                store.id!!
             }
 
             //Create new shopping list
@@ -50,36 +53,46 @@ class PersistShoppingListUseCase(
                 //or current brand
                 //or new id if brand does not exists in db
                 val brand = it.brandMediator.value
-                val brandMobileId: Long? = brand?.id ?: brand?.toDatabaseModel()?.let { b ->
-                    b.state = 1
-                    brandDao.insert(b)
-                }
+
+                val brandMobileId = if (brand?.id != null)
+                    brand.id
+                else if (brand != null && brand.id == null) {
+                    brand.toDatabaseModel()
+                        .let { b ->
+                            b.state = 1
+                            brandDao.insert(b)
+                        }
+                } else null
 
                 //Get category from mediatorLiveData
                 //Category is mandatory, set current category id
                 //or new id if category does not exists in db
                 val category = it.categoryMediator.value
-                val categoryMobileId: Long =
-                    category?.id ?: category?.toDatabaseModel()!!.let { c ->
+                val categoryMobileId = if (category?.id == null) {
+                    category?.toDatabaseModel()!!.let { c ->
                         c.state = 1
                         categoryDao.insert(c)
                     }
+                } else category.id
 
                 //Get item from mediatorLiveData
                 //Item is mandatory, set current item id
                 //or new id if item does not exits in db
                 val item = it.itemMediator.value
-                val itemMobileId =
-                    item?.id ?: Item(
+                val itemMobileId: Long = if (item?.id == null) {
+                    Item(
                         name = it.itemName.value!!,
                         brandId = brandMobileId,
-                        categoryId = categoryMobileId,
+                        categoryId = categoryMobileId!!,
                         state = 1
                     )
                         .let { newItem ->
                             newItem.state = 1
                             itemDao.insert(newItem)
                         }
+                } else {
+                    item.id!!
+                }
 
 
                 it.toDatabaseModel(shoppingListMobileId, itemMobileId, 1)

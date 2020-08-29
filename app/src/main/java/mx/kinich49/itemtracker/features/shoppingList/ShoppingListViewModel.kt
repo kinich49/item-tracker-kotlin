@@ -107,6 +107,5 @@ class ShoppingListViewModel(
     override fun onCleared() {
         super.onCleared()
         storeMediator.removeObserver(mediatorStoreObserver)
-
     }
 }
