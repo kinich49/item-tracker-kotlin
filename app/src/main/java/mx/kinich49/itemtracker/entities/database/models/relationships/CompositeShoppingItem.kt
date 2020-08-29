@@ -6,8 +6,10 @@ import mx.kinich49.itemtracker.entities.database.models.Brand
 import mx.kinich49.itemtracker.entities.database.models.Category
 
 data class CompositeShoppingItem(
-    @ColumnInfo(name = "shopping_item_id") val shoppingItemId: Long,
-    @ColumnInfo(name = "item_id") val itemId: Long,
+    @ColumnInfo(name = "shopping_item_mobile_id") val shoppingItemMobileId: Long,
+    @ColumnInfo(name = "shopping_item_remote_id") val shoppingItemRemoteId: Long,
+    @ColumnInfo(name = "item_mobile_id") val itemMobileId: Long,
+    @ColumnInfo(name = "item_remote_id") val itemRemoteId: Long,
     @ColumnInfo(name = "item_state") val itemState: Int,
     val name: String,
     @ColumnInfo(name = "unit_price") val unitPrice: Int,

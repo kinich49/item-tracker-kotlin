@@ -19,7 +19,7 @@ class LoadPendingShoppingListUseCase(
         return Observable.create { emitter ->
             shoppingListDao.getPendingShoppingLists()
                 .forEach {
-                    it.shoppingItems = shoppingItemDao.getShoppingItemsBy(it.shoppingListId)
+                    it.shoppingItems = shoppingItemDao.getShoppingItemsBy(it.remoteId)
                     emitter.onNext(it)
                 }
             emitter.onComplete()

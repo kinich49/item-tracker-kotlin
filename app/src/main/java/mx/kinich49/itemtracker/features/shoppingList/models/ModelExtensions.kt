@@ -5,7 +5,10 @@ fun Brand.toDatabaseModel(): mx.kinich49.itemtracker.entities.database.models.Br
     require(!this.name.isNullOrBlank()) {
         "Brand name must be set"
     }
-    return mx.kinich49.itemtracker.entities.database.models.Brand(this.id, this.name!!)
+    return mx.kinich49.itemtracker.entities.database.models.Brand(
+        mobileId = this.id,
+        name = this.name!!
+    )
 }
 
 @Throws(IllegalArgumentException::class)
@@ -13,7 +16,10 @@ fun Category.toDatabaseModel(): mx.kinich49.itemtracker.entities.database.models
     require(!this.name.isNullOrBlank()) {
         "Category name must be set"
     }
-    return mx.kinich49.itemtracker.entities.database.models.Category(this.id, this.name!!)
+    return mx.kinich49.itemtracker.entities.database.models.Category(
+        mobileId = this.id,
+        name = this.name!!
+    )
 }
 
 @Throws(IllegalArgumentException::class)
@@ -21,34 +27,39 @@ fun Store.toDatabaseModel(): mx.kinich49.itemtracker.entities.database.models.St
     require(!this.name.isNullOrBlank()) {
         "Category name must be set"
     }
-    return mx.kinich49.itemtracker.entities.database.models.Store(this.id, this.name!!)
-}
-
-@Throws(IllegalArgumentException::class)
-fun ShoppingItem.toDatabaseModel(
-    shoppingListId: Long,
-    itemId: Long,
-    state: Int = 0
-): mx.kinich49.itemtracker.entities.database.models.ShoppingItem {
-    require(!this.name.isNullOrBlank()) {
-        "Item name must be set"
-    }
-    require(!this.unitPrice.isBlank()) {
-        "Unit price must be set"
-    }
-
-    require(!this.quantity.isBlank()) {
-        "Quantity must be set"
-    }
-
-    return mx.kinich49.itemtracker.entities.database.models.ShoppingItem(
-        this.id,
-        this.quantity.toDouble(),
-        this.unit,
-        this.unitPrice.toInt() * 100,
-        shoppingListId, itemId, state = state
+    return mx.kinich49.itemtracker.entities.database.models.Store(
+        mobileId = this.id,
+        name = this.name!!
     )
 }
+
+//@Throws(IllegalArgumentException::class)
+//fun ShoppingItem.toDatabaseModel(
+//    shoppingListId: Long,
+//    itemId: Long,
+//    state: Int = 0
+//): mx.kinich49.itemtracker.entities.database.models.ShoppingItem {
+//    require(!this.name.isNullOrBlank()) {
+//        "Item name must be set"
+//    }
+//    require(!this.unitPrice.isBlank()) {
+//        "Unit price must be set"
+//    }
+//
+//    require(!this.quantity.isBlank()) {
+//        "Quantity must be set"
+//    }
+//
+//    return mx.kinich49.itemtracker.entities.database.models.ShoppingItem(
+//        mobileId = this.id,
+//        quantity = this.quantity.toDouble(),
+//        unit = this.unit,
+//        unitPrice = this.unitPrice.toInt() * 100,
+//        shoppingListId = shoppingListId,
+//        itemId = itemId,
+//        state = state
+//    )
+//}
 
 fun ShoppingItemViewModel.toDatabaseModel(
     shoppingListId: Long,
@@ -68,10 +79,11 @@ fun ShoppingItemViewModel.toDatabaseModel(
     }
 
     return mx.kinich49.itemtracker.entities.database.models.ShoppingItem(
-        null,
-        this.quantity.toDouble(),
-        this.unit,
-        this.unitPrice.toInt() * 100,
-        shoppingListId, itemId, state = state
+        quantity = this.quantity.toDouble(),
+        unit = this.unit,
+        unitPrice = this.unitPrice.toInt() * 100,
+        shoppingListId = shoppingListId,
+        itemId = itemId,
+        state = state
     )
 }

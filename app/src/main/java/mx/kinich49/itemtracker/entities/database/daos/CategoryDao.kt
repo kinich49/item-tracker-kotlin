@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Transaction
 import mx.kinich49.itemtracker.entities.database.models.Category
-import mx.kinich49.itemtracker.entities.database.models.relationships.CategoryWithItems
 
 @Dao
 interface CategoryDao {
@@ -23,13 +21,9 @@ interface CategoryDao {
     @Insert
     fun insert(vararg category: Category)
 
-    @Transaction
-    @Query("SELECT * FROM Categories WHERE id = :id")
-    fun getCategoryWithItems(id: Long): LiveData<List<CategoryWithItems>>
-
-    @Query("DELETE FROM Categories WHERE id = :id")
+    @Query("DELETE FROM Categories WHERE mobile_id = :id")
     fun delete(id: Long)
 
-    @Query("UPDATE Categories SET state = 3 WHERE id = :id")
+    @Query("UPDATE Categories SET state = 3 WHERE mobile_id = :id")
     fun inactivate(id: Long)
 }

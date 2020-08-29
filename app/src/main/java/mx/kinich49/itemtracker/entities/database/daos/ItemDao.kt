@@ -10,48 +10,38 @@ import mx.kinich49.itemtracker.entities.database.models.relationships.CompositeI
 interface ItemDao {
 
     @Query(
-        "SELECT it.name as item_name, it.id as item_id, it.state as item_state, " +
+        "SELECT it.mobile_id as item_mobile_id, it.remote_id as item_remote_id, " +
+                "it.state as item_state, it.name as item_name, " +
                 "it.brand_id as item_brand_id, it.category_id as item_category_id, " +
-                "br.id as brand_id, br.name as brand_name, br.state as brand_state, " +
-                "ca.id as category_id, ca.name as category_name, " +
-                "ca.state as category_state " +
+                "br.mobile_id as brand_mobile_id, br.remote_id as brand_remote_id, " +
+                "br.name as brand_name, br.state as brand_state, " +
+                "ca.mobile_id as category_mobile_id, ca.remote_id as category_remote_id, " +
+                "ca.name as category_name, ca.state as category_state " +
                 "FROM Items as it " +
                 "INNER JOIN Brands br " +
-                "ON br.id = it.brand_id " +
+                "ON br.mobile_id = it.brand_id " +
                 "INNER JOIN Categories ca " +
-                "ON ca.id = it.category_id"
+                "ON ca.mobile_id = it.category_id"
     )
     fun getAllItems(): List<CompositeItem>
 
     @Query(
-        "SELECT it.name as item_name, it.id as item_id, it.state as item_state, " +
+        "SELECT it.mobile_id as item_mobile_id, it.remote_id as item_remote_id, " +
+                "it.state as item_state, it.name as item_name, " +
                 "it.brand_id as item_brand_id, it.category_id as item_category_id, " +
-                "br.id as brand_id, br.name as brand_name, br.state as brand_state, " +
-                "ca.id as category_id, ca.name as category_name, " +
-                "ca.state as category_state " +
+                "br.mobile_id as brand_mobile_id, br.remote_id as brand_remote_id, " +
+                "br.name as brand_name, br.state as brand_state, " +
+                "ca.mobile_id as category_mobile_id, ca.remote_id as category_remote_id, " +
+                "ca.name as category_name, ca.state as category_state " +
                 "FROM Items as it " +
                 "INNER JOIN Brands br " +
-                "ON br.id = it.brand_id " +
+                "ON br.mobile_id = it.brand_id " +
                 "INNER JOIN Categories ca " +
-                "ON ca.id = it.category_id " +
+                "ON ca.mobile_id = it.category_id " +
                 "WHERE it.name LIKE  '%' || :name || '%' " +
                 "COLLATE NOCASE"
     )
     fun getItemsLike(name: String): List<CompositeItem>
-
-//    @Query(
-//        "SELECT i.id as item_id, i.name as item_name, " +
-//                "i.brand_id as item_brand_id, i.category_id as item_category_id, " +
-//                "b.id as brand_id, b.name as brand_name," +
-//                "c.id as category_id, c.name as category_name " +
-//                "FROM Items as i " +
-//                "INNER JOIN Brands b " +
-//                "ON i.brand_id = b.id " +
-//                "INNER JOIN Categories c " +
-//                "ON i.category_id = c.id " +
-//                "WHERE i.id = :id"
-//    )
-//    fun getItemBrandAndCategory(id: Long): LiveData<CompositeItem>
 
     @Insert
     fun insert(item: Item): Long
@@ -59,9 +49,9 @@ interface ItemDao {
     @Insert
     fun insert(vararg item: Item)
 
-    @Query("DELETE FROM Items WHERE id = :id")
+    @Query("DELETE FROM Items WHERE mobile_id = :id")
     fun delete(id: Long)
 
-    @Query("UPDATE Items SET state = 3 WHERE id = :id")
+    @Query("UPDATE Items SET state = 3 WHERE mobile_id = :id")
     fun inactivate(id: Long)
 }

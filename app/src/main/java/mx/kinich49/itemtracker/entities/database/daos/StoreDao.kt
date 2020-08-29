@@ -8,7 +8,7 @@ import mx.kinich49.itemtracker.entities.database.models.Store
 @Dao
 interface StoreDao {
 
-    @Query("SELECT * FROM Stores WHERE id = :id")
+    @Query("SELECT * FROM Stores WHERE mobile_id = :id")
     fun getStore(id: Long): Store?
 
     @Query("SELECT * FROM Stores")
@@ -23,9 +23,9 @@ interface StoreDao {
     @Insert
     fun insert(vararg store: Store)
 
-    @Query("DELETE FROM Stores WHERE id = :id")
+    @Query("DELETE FROM Stores WHERE mobile_id = :id")
     fun delete(id: Long)
 
-    @Query("UPDATE Stores SET state = 3 WHERE id = :id")
+    @Query("UPDATE Stores SET state = 3 WHERE mobile_id = :id")
     fun inactivate(id: Long)
 }

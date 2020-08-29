@@ -3,7 +3,7 @@ package mx.kinich49.itemtracker.entities.usecases.sync.upstream
 import io.reactivex.Completable
 import mx.kinich49.itemtracker.entities.database.daos.*
 import mx.kinich49.itemtracker.entities.apis.models.ShoppingListResponse
-import mx.kinich49.itemtracker.entities.apis.models.extensions.toDBModel
+import mx.kinich49.itemtracker.entities.apis.extensions.toDBModel
 
 class UpdateLocalShoppingListUseCase(
     private val storeDao: StoreDao,

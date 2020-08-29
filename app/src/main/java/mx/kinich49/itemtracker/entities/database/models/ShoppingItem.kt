@@ -10,17 +10,18 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = Item::class,
-            parentColumns = arrayOf("id"),
+            parentColumns = arrayOf("mobile_id"),
             childColumns = arrayOf("item_id")
         ),
         ForeignKey(
             entity = ShoppingList::class,
-            parentColumns = arrayOf("id"),
+            parentColumns = arrayOf("mobile_id"),
             childColumns = arrayOf("shopping_list_id")
         )]
 )
 data class ShoppingItem(
-    @PrimaryKey(autoGenerate = true) val id: Long? = null,
+    @PrimaryKey @ColumnInfo(name = "mobile_id") val mobileId: Long? = null,
+    @ColumnInfo(name = "remote_id") val remoteId: Long? = null,
     val quantity: Double,
     val unit: String,
     @ColumnInfo(name = "unit_price") val unitPrice: Int,

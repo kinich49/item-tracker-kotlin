@@ -10,6 +10,6 @@ data class Category(
 
     companion object {
         fun from(category: mx.kinich49.itemtracker.entities.database.models.Category): Category =
-            Category(category.id, category.name)
+            Category(category.mobileId, category.name)
     }
 }
