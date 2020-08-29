@@ -4,9 +4,9 @@ import io.reactivex.Completable
 import mx.kinich49.itemtracker.entities.database.daos.*
 import mx.kinich49.itemtracker.entities.database.models.Item
 import mx.kinich49.itemtracker.entities.database.models.ShoppingList
-import mx.kinich49.itemtracker.features.shoppingList.models.ShoppingItemViewModel
+import mx.kinich49.itemtracker.features.shoppingList.models.ShoppingItem
 import mx.kinich49.itemtracker.features.shoppingList.models.Store
-import mx.kinich49.itemtracker.features.shoppingList.models.toDatabaseModel
+import mx.kinich49.itemtracker.features.shoppingList.extensions.toDatabaseModel
 import java.time.LocalDate
 
 class PersistShoppingListUseCase(
@@ -20,7 +20,7 @@ class PersistShoppingListUseCase(
 
     fun execute(
         store: Store,
-        shoppingItems: List<ShoppingItemViewModel>,
+        shoppingItems: List<ShoppingItem>,
         shoppingDate: LocalDate
     ): Completable {
 

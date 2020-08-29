@@ -6,7 +6,7 @@
 
         <variable
             name="shoppingItem"
-            type="mx.kinich49.itemtracker.features.shoppingList.models.ShoppingItemViewModel" />
+            type="mx.kinich49.itemtracker.features.shoppingList.models.ShoppingItem" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

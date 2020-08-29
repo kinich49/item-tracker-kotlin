@@ -5,7 +5,7 @@ import androidx.work.*
 import mx.kinich49.itemtracker.core.LiveEvent
 import mx.kinich49.itemtracker.entities.usecases.sync.upstream.UpstreamSyncWorker
 import mx.kinich49.itemtracker.features.shoppingList.models.RecyclerItem
-import mx.kinich49.itemtracker.features.shoppingList.models.ShoppingItemViewModel
+import mx.kinich49.itemtracker.features.shoppingList.models.ShoppingItem
 import mx.kinich49.itemtracker.features.shoppingList.models.Store
 import mx.kinich49.itemtracker.entities.apis.services.SchedulerProvider
 import mx.kinich49.itemtracker.entities.usecases.persistance.PersistShoppingListUseCase
@@ -18,7 +18,7 @@ class ShoppingListViewModel(
 ) : ViewModel() {
 
     private val _shoppingItems: MutableLiveData<MutableList<RecyclerItem>> =
-        MutableLiveData(ArrayList(listOf(ShoppingItemViewModel().toRecyclerItem())))
+        MutableLiveData(ArrayList(listOf(ShoppingItem().toRecyclerItem())))
     val shoppingItems: LiveData<MutableList<RecyclerItem>> = _shoppingItems
 
     val store = MutableLiveData<Store>(Store())
@@ -52,7 +52,7 @@ class ShoppingListViewModel(
     }
 
     fun addBlankShoppingItem() {
-        val blankShoppingItem = ShoppingItemViewModel().toRecyclerItem()
+        val blankShoppingItem = ShoppingItem().toRecyclerItem()
 
         val items = _shoppingItems.value
         items?.add(blankShoppingItem)
@@ -67,7 +67,7 @@ class ShoppingListViewModel(
         } else {
             val shoppingItems =
                 _shoppingItems.value?.map {
-                    it.data as ShoppingItemViewModel
+                    it.data as ShoppingItem
                 }
             val compositeDisposable = persistShoppingList.execute(
                 store!!,

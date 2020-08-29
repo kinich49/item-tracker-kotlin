@@ -1,4 +1,9 @@
-package mx.kinich49.itemtracker.features.shoppingList.models
+package mx.kinich49.itemtracker.features.shoppingList.extensions
+
+import mx.kinich49.itemtracker.features.shoppingList.models.Brand
+import mx.kinich49.itemtracker.features.shoppingList.models.Category
+import mx.kinich49.itemtracker.features.shoppingList.models.ShoppingItem
+import mx.kinich49.itemtracker.features.shoppingList.models.Store
 
 @Throws(IllegalArgumentException::class)
 fun Brand.toDatabaseModel(): mx.kinich49.itemtracker.entities.database.models.Brand {
@@ -33,35 +38,7 @@ fun Store.toDatabaseModel(): mx.kinich49.itemtracker.entities.database.models.St
     )
 }
 
-//@Throws(IllegalArgumentException::class)
-//fun ShoppingItem.toDatabaseModel(
-//    shoppingListId: Long,
-//    itemId: Long,
-//    state: Int = 0
-//): mx.kinich49.itemtracker.entities.database.models.ShoppingItem {
-//    require(!this.name.isNullOrBlank()) {
-//        "Item name must be set"
-//    }
-//    require(!this.unitPrice.isBlank()) {
-//        "Unit price must be set"
-//    }
-//
-//    require(!this.quantity.isBlank()) {
-//        "Quantity must be set"
-//    }
-//
-//    return mx.kinich49.itemtracker.entities.database.models.ShoppingItem(
-//        mobileId = this.id,
-//        quantity = this.quantity.toDouble(),
-//        unit = this.unit,
-//        unitPrice = this.unitPrice.toInt() * 100,
-//        shoppingListId = shoppingListId,
-//        itemId = itemId,
-//        state = state
-//    )
-//}
-
-fun ShoppingItemViewModel.toDatabaseModel(
+fun ShoppingItem.toDatabaseModel(
     shoppingListId: Long,
     itemId: Long,
     state: Int = 0
