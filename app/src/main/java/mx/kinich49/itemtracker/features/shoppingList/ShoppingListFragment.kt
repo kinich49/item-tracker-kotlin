@@ -11,9 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import mx.kinich49.itemtracker.entities.database.ItemTrackerDatabase
 import mx.kinich49.itemtracker.R
 import mx.kinich49.itemtracker.databinding.BlankShoppingListLayoutBinding
+import mx.kinich49.itemtracker.entities.database.ItemTrackerDatabase
 import mx.kinich49.itemtracker.entities.database.extensions.toView
 import mx.kinich49.itemtracker.features.factories.ItemTrackerViewModelFactory
 import mx.kinich49.itemtracker.features.shoppingList.adapters.AutoSuggestAdapter

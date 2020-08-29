@@ -1,6 +1,5 @@
 package mx.kinich49.itemtracker.entities.apis.services
 
-import mx.kinich49.itemtracker.entities.database.models.ShoppingList
 import io.reactivex.Completable
 import io.reactivex.Single
 import mx.kinich49.itemtracker.entities.apis.models.JsonApi
@@ -12,11 +11,11 @@ interface ShoppingListService {
 
     @GET(value = "shoppingLists")
     fun getShoppingLists():
-            Single<JsonApi<List<ShoppingList>>>
+            Single<JsonApi<List<ShoppingListResponse>>>
 
     @GET(value = "shoppingLists/{id}")
     fun getShoppingListBy(@Path(value = "id") id: Long):
-            Single<JsonApi<ShoppingList>>
+            Single<JsonApi<ShoppingListResponse>>
 
     @POST(value = "shoppingLists")
     fun postShoppingList(@Body shoppingList: ShoppingListRequest):

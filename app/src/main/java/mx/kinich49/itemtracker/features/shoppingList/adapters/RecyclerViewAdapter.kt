@@ -7,13 +7,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.blank_shopping_item_layout.view.*
 import mx.kinich49.itemtracker.entities.database.ItemTrackerDatabase
 import mx.kinich49.itemtracker.entities.database.extensions.toView
 import mx.kinich49.itemtracker.features.shoppingList.models.Brand
 import mx.kinich49.itemtracker.features.shoppingList.models.Category
 import mx.kinich49.itemtracker.features.shoppingList.models.Item
 import mx.kinich49.itemtracker.features.shoppingList.models.RecyclerItem
-import kotlinx.android.synthetic.main.blank_shopping_item_layout.view.*
 
 class RecyclerViewAdapter(private val lifecycleOwner: LifecycleOwner) :
     RecyclerView.Adapter<RecyclerViewAdapter.BindingViewHolder>() {

@@ -4,33 +4,33 @@ import mx.kinich49.itemtracker.entities.apis.models.*
 import mx.kinich49.itemtracker.entities.database.models.*
 
 fun StoreResponse.toDBModel(): Store {
-    return Store(null, this.id, this.name)
+    return Store(null, this.remoteId, this.name)
 }
 
 fun BrandResponse.toDBModel(): Brand {
-    return Brand(null, this.id, this.name)
+    return Brand(null, this.remoteId, this.name)
 }
 
 fun CategoryResponse.toDBModel(): Category {
-    return Category(null, this.id, this.name)
+    return Category(null, this.remoteId, this.name)
 }
 
 fun ItemResponse.toDBModel(): Item {
-    return Item(null, this.id, this.name, this.brand?.id, this.category.id)
+    return Item(null, this.remoteId, this.name, this.brand?.remoteId, this.category.remoteId)
 }
 
 fun ShoppingItemResponse.toDBModel(): ShoppingItem {
     return ShoppingItem(
-        null, this.id,
+        null, this.remoteId,
         this.quantity, this.unit,
         this.unitPrice, this.shoppingListId,
-        this.item.id, this.currency
+        this.item.remoteId, this.currency
     )
 }
 
 fun ShoppingListResponse.toDBModel(): ShoppingList {
     return ShoppingList(
-        null, this.id,
-        this.shoppingDate, this.store.id
+        null, this.remoteId,
+        this.shoppingDate, this.store.remoteId
     )
 }

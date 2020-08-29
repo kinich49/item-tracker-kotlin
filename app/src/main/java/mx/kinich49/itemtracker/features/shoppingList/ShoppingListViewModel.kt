@@ -3,12 +3,12 @@ package mx.kinich49.itemtracker.features.shoppingList
 import androidx.lifecycle.*
 import androidx.work.*
 import mx.kinich49.itemtracker.core.LiveEvent
+import mx.kinich49.itemtracker.entities.apis.services.SchedulerProvider
+import mx.kinich49.itemtracker.entities.usecases.persistance.PersistShoppingListUseCase
 import mx.kinich49.itemtracker.entities.usecases.sync.upstream.UpstreamSyncWorker
 import mx.kinich49.itemtracker.features.shoppingList.models.RecyclerItem
 import mx.kinich49.itemtracker.features.shoppingList.models.ShoppingItem
 import mx.kinich49.itemtracker.features.shoppingList.models.Store
-import mx.kinich49.itemtracker.entities.apis.services.SchedulerProvider
-import mx.kinich49.itemtracker.entities.usecases.persistance.PersistShoppingListUseCase
 import java.time.LocalDate
 
 class ShoppingListViewModel(
