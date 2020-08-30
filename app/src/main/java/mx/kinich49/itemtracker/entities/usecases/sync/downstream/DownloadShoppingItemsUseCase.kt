@@ -38,7 +38,7 @@ class DownloadShoppingItemsUseCase(
         return Single.create { emitter ->
             if (!response.isNullOrEmpty()) {
                 val dbModels = response.map {
-                    it.toDBModel()
+                    it.toDBModel(it.item.remoteId, it.shoppingListId)
                 }
                 emitter.onSuccess(dbModels)
             } else {

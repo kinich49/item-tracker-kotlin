@@ -41,6 +41,13 @@ interface ShoppingItemDao {
     @Transaction
     fun getShoppingItemsBy(shoppingListId: Long): List<CompositeShoppingItem>
 
+    @Transaction
+    @Query(
+        "UPDATE Shopping_Items SET item_id = :newItemMobileId WHERE item_id = :oldItemMobileId " +
+                "AND state = 1"
+    )
+    fun updateItemMobileId(oldItemMobileId: Long, newItemMobileId: Long)
+
     @Query("DELETE FROM Shopping_Items WHERE mobile_id = :id")
     fun delete(id: Long)
 

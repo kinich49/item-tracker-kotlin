@@ -1,7 +1,9 @@
 package mx.kinich49.itemtracker.entities.usecases.sync.upstream
 
 import io.reactivex.Completable
+import mx.kinich49.itemtracker.core.Either
 import mx.kinich49.itemtracker.entities.apis.extensions.toDBModel
+import mx.kinich49.itemtracker.entities.apis.models.ItemResponse
 import mx.kinich49.itemtracker.entities.apis.models.ShoppingListResponse
 import mx.kinich49.itemtracker.entities.database.daos.*
 
@@ -28,7 +30,7 @@ class UpdateLocalShoppingListUseCase(
                     storeDao.insert(it)
                 }
 
-            response
+            val shoppingListId: Long = response
                 .apply {
                     shoppingListDao.inactivate(this.mobileId!!)
                 }
@@ -37,10 +39,10 @@ class UpdateLocalShoppingListUseCase(
                     shoppingListDao.insert(it)
                 }
 
-            for (shoppingItem in response.shoppingItems) {
-                val item = shoppingItem.item
+            for (shoppingItemResponse in response.shoppingItems) {
+                val itemResponse = shoppingItemResponse.item
 
-                item.brand
+                itemResponse.brand
                     ?.takeIf {
                         it.mobileId != null
                     }
@@ -52,7 +54,7 @@ class UpdateLocalShoppingListUseCase(
                         brandDao.insert(it)
                     }
 
-                item.category
+                itemResponse.category
                     .takeIf {
                         it.mobileId != null
                     }
@@ -64,29 +66,47 @@ class UpdateLocalShoppingListUseCase(
                         categoryDao.insert(it)
                     }
 
-                item
-                    .takeIf {
-                        it.mobileId != null
-                    }
-                    ?.apply {
-                        itemDao.inactivate(this.mobileId!!)
-                    }
-                    ?.toDBModel()
-                    ?.let {
-                        itemDao.insert(it)
-                    }
+                val eitherPairOrLatestItemId = inactiveItemAndGetCurrentMobileId(itemResponse)
 
-                shoppingItem
+                shoppingItemResponse
                     .apply {
                         shoppingItemDao.inactivate(this.mobileId!!)
-                    }
-                    .toDBModel()
-                    .let {
-                        shoppingItemDao.insert(it)
+                        eitherPairOrLatestItemId.fold({
+                            val oldItemMobileId = it.first
+                            val newItemMobileId = it.second
+                            shoppingItemDao.updateItemMobileId(oldItemMobileId, newItemMobileId)
+                            this.toDBModel(newItemMobileId, shoppingListId)
+                                .let { shoppingItem ->
+                                    shoppingItemDao.insert(shoppingItem)
+                                }
+                        }, {
+                            this.toDBModel(it, shoppingListId)
+                                .let { shoppingItem ->
+                                    shoppingItemDao.insert(shoppingItem)
+                                }
+                        })
                     }
             }
 
             emitter.onComplete()
         }
     }
+
+    private fun inactiveItemAndGetCurrentMobileId(itemResponse: ItemResponse):
+            Either<Pair<Long, Long>, Long> {
+        return if (itemResponse.mobileId != null) {
+            itemResponse.apply {
+                itemDao.inactivate(this.mobileId!!)
+            }
+                .toDBModel()
+                .let {
+                    val newItemMobileId = itemDao.insert(it)
+                    Either.Left(Pair(itemResponse.mobileId, newItemMobileId))
+                }
+        } else {
+            val mobileId = itemDao.getMobileIdForRemoteId(itemResponse.remoteId)
+            Either.Right(mobileId)
+        }
+    }
+
 }

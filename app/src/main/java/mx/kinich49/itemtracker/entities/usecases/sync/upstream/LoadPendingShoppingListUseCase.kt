@@ -17,9 +17,11 @@ class LoadPendingShoppingListUseCase(
      */
     fun execute(): Observable<CompositeShoppingList> {
         return Observable.create { emitter ->
-            shoppingListDao.getPendingShoppingLists()
+            val shoppingLists = shoppingListDao.getPendingShoppingLists()
+            shoppingLists
                 .forEach {
-                    it.shoppingItems = shoppingItemDao.getShoppingItemsBy(it.remoteId)
+                    val shoppingItems = shoppingItemDao.getShoppingItemsBy(it.mobileId)
+                    it.shoppingItems = shoppingItems
                     emitter.onNext(it)
                 }
             emitter.onComplete()

@@ -19,12 +19,12 @@ fun ItemResponse.toDBModel(): Item {
     return Item(null, this.remoteId, this.name, this.brand?.remoteId, this.category.remoteId)
 }
 
-fun ShoppingItemResponse.toDBModel(): ShoppingItem {
+fun ShoppingItemResponse.toDBModel(itemId: Long, shoppingListId: Long): ShoppingItem {
     return ShoppingItem(
         null, this.remoteId,
         this.quantity, this.unit,
-        this.unitPrice, this.shoppingListId,
-        this.item.remoteId, this.currency
+        this.unitPrice, shoppingListId,
+        itemId, this.currency
     )
 }
 

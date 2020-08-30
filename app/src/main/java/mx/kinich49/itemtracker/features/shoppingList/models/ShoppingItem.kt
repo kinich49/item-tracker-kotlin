@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import mx.kinich49.itemtracker.BR
 import mx.kinich49.itemtracker.R
+import timber.log.Timber
 import java.text.DecimalFormat
 
 class ShoppingItem : BaseObservable() {
@@ -28,11 +29,11 @@ class ShoppingItem : BaseObservable() {
     }
 
     private var brandMediatorObserver = Observer<Brand> {
-        //Empty observer to activate brandMediator
+        Timber.tag("TEST").d("brandMediatorObserver")
     }
 
     private var itemMediatorObserver = Observer<Item> {
-        //Empty observer to activate itemMediator
+        Timber.tag("TEST").d("itemMediatorObserver")
     }
 
     init {
@@ -41,10 +42,14 @@ class ShoppingItem : BaseObservable() {
         }
 
         categoryMediator.addSource(categoryName) { value ->
-            val mediatorData = categoryMediator.value
-            mediatorData?.name = value
-            mediatorData?.id = null
-            categoryMediator.value = mediatorData
+            val mediatorData =
+                if (categoryMediator.value == null) Category() else categoryMediator.value
+
+            if (!mediatorData?.name.equals(value)) {
+                mediatorData?.name = value
+                mediatorData?.id = null
+                categoryMediator.value = mediatorData
+            }
         }
 
         categoryMediator.observeForever(categoryMediatorObserver)
@@ -54,16 +59,21 @@ class ShoppingItem : BaseObservable() {
         }
 
         brandMediator.addSource(brandName) { value ->
-            val mediatorData = brandMediator.value
-            mediatorData?.name = value
-            mediatorData?.id = null
-            brandMediator.value = mediatorData
+            val mediatorData =
+                if (brandMediator.value == null) Brand() else brandMediator.value
+
+            if (!mediatorData?.name.equals(value)) {
+                mediatorData?.name = value
+                mediatorData?.id = null
+                brandMediator.value = mediatorData
+            }
         }
 
         brandMediator.observeForever(brandMediatorObserver)
 
         itemMediator.addSource(itemName) { value ->
-            val mediatorData = itemMediator.value
+            val mediatorData =
+                if (itemMediator.value == null) Item() else itemMediator.value
             mediatorData?.name = value
             mediatorData?.id = null
             itemMediator.value = mediatorData

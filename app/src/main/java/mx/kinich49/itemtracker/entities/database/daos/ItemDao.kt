@@ -43,6 +43,9 @@ interface ItemDao {
     )
     fun getItemsLike(name: String): List<CompositeItem>
 
+    @Query("SELECT mobile_id from Items WHERE remote_id = :remoteId")
+    fun getMobileIdForRemoteId(remoteId: Long): Long
+
     @Insert
     fun insert(item: Item): Long
 
