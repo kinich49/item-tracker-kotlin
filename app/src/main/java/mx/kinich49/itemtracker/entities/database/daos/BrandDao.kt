@@ -12,8 +12,13 @@ interface BrandDao {
     @Query("SELECT * FROM Brands")
     fun getAllBrands(): LiveData<List<Brand>>
 
-    @Query("SELECT * FROM Brands WHERE name LIKE  '%' || :name || '%' COLLATE NOCASE")
-    fun getBrandsLike(name: String): List<Brand>
+    @Query(
+        "SELECT * FROM Brands " +
+                "WHERE state != 3 " +
+                "AND name LIKE  '%' || :name || '%' " +
+                "COLLATE NOCASE"
+    )
+    fun getActiveBrandsLike(name: String): List<Brand>
 
     @Insert
     fun insert(brand: Brand): Long

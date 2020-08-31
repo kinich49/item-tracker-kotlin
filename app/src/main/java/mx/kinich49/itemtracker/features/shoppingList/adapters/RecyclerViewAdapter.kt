@@ -43,7 +43,7 @@ class RecyclerViewAdapter(private val lifecycleOwner: LifecycleOwner) :
         binding.root.item_field.addTextChangedListener { editable ->
             itemAdapter.clear()
             editable?.toString()?.let {
-                itemDao.getItemsLike(it)
+                itemDao.getActiveItemsLike(it)
                     .map { i -> i.toView() }
                     .let { results ->
                         itemAdapter.addAll(results)
@@ -57,7 +57,7 @@ class RecyclerViewAdapter(private val lifecycleOwner: LifecycleOwner) :
         binding.root.brand_field.addTextChangedListener { editable ->
             brandAdapter.clear()
             editable?.toString()?.let {
-                brandDao.getBrandsLike(it)
+                brandDao.getActiveBrandsLike(it)
                     .map { b -> b.toView() }
                     .let { results ->
                         brandAdapter.addAll(results)

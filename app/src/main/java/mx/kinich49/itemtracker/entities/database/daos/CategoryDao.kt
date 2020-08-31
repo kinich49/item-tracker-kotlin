@@ -12,7 +12,11 @@ interface CategoryDao {
     @Query("SELECT * from Categories")
     fun getAllCategories(): LiveData<List<Category>>
 
-    @Query("SELECT * FROM Categories WHERE name LIKE  '%' || :name || '%' COLLATE NOCASE")
+    @Query(
+        "SELECT * FROM Categories " +
+                "WHERE state != 3 " +
+                "AND name LIKE  '%' || :name || '%' COLLATE NOCASE"
+    )
     fun getCategoriesLike(name: String): List<Category>
 
     @Insert

@@ -38,10 +38,11 @@ interface ItemDao {
                 "ON br.mobile_id = it.brand_id " +
                 "INNER JOIN Categories ca " +
                 "ON ca.mobile_id = it.category_id " +
-                "WHERE it.name LIKE  '%' || :name || '%' " +
+                "WHERE it.state != 3 " +
+                "AND it.name LIKE  '%' || :name || '%' " +
                 "COLLATE NOCASE"
     )
-    fun getItemsLike(name: String): List<CompositeItem>
+    fun getActiveItemsLike(name: String): List<CompositeItem>
 
     @Query("SELECT mobile_id from Items WHERE remote_id = :remoteId")
     fun getMobileIdForRemoteId(remoteId: Long): Long

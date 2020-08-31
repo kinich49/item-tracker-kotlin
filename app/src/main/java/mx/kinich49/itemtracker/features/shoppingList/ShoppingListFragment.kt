@@ -49,7 +49,7 @@ class ShoppingListFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFact
         binding.storeInputField.addTextChangedListener { editable ->
             storeAdapter.clear()
             editable?.toString()?.let {
-                storeDao.getStoresLike(it)
+                storeDao.getActiveStoresLike(it)
                     .map { s -> s.toView() }
                     .let { results ->
                         storeAdapter.addAll(results)

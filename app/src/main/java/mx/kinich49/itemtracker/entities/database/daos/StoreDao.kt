@@ -14,8 +14,12 @@ interface StoreDao {
     @Query("SELECT * FROM Stores")
     fun getAllStores(): List<Store>
 
-    @Query("SELECT * FROM Stores WHERE name LIKE  '%' || :name || '%' COLLATE NOCASE")
-    fun getStoresLike(name: String): List<Store>
+    @Query(
+        "SELECT * FROM Stores " +
+                "WHERE state != 3 " +
+                "AND name LIKE  '%' || :name || '%' COLLATE NOCASE"
+    )
+    fun getActiveStoresLike(name: String): List<Store>
 
     @Insert
     fun insert(store: Store): Long
