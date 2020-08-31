@@ -3,7 +3,7 @@ package mx.kinich49.itemtracker.entities.apis.models
 import java.time.LocalDate
 
 data class ShoppingListResponse(
-    val id: Long,
+    val remoteId: Long,
     val mobileId: Long? = null,
     val shoppingDate: LocalDate,
     val store: StoreResponse,
@@ -11,7 +11,7 @@ data class ShoppingListResponse(
 )
 
 data class ShoppingItemResponse(
-    val id: Long,
+    val remoteId: Long,
     val mobileId: Long? = null,
     val currency: String,
     val quantity: Double,
@@ -22,7 +22,7 @@ data class ShoppingItemResponse(
 )
 
 data class ItemResponse(
-    val id: Long,
+    val remoteId: Long,
     val mobileId: Long? = null,
     val name: String,
     val brand: BrandResponse?,
@@ -30,19 +30,19 @@ data class ItemResponse(
 )
 
 data class BrandResponse(
-    val id: Long,
+    val remoteId: Long,
     val mobileId: Long? = null,
     val name: String
 )
 
 data class StoreResponse(
-    val id: Long,
+    val remoteId: Long,
     val mobileId: Long? = null,
     val name: String
 )
 
 data class CategoryResponse(
-    val id: Long,
+    val remoteId: Long,
     val mobileId: Long? = null,
     val name: String
 )

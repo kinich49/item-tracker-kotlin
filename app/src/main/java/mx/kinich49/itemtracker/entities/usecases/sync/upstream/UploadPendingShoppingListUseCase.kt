@@ -1,11 +1,11 @@
 package mx.kinich49.itemtracker.entities.usecases.sync.upstream
 
 import io.reactivex.Single
-import mx.kinich49.itemtracker.entities.database.models.relationships.CompositeShoppingList
-import mx.kinich49.itemtracker.entities.database.extensions.toRequest
-import mx.kinich49.itemtracker.entities.apis.services.ShoppingListService
 import mx.kinich49.itemtracker.entities.apis.models.ShoppingListRequest
 import mx.kinich49.itemtracker.entities.apis.models.ShoppingListResponse
+import mx.kinich49.itemtracker.entities.apis.services.ShoppingListService
+import mx.kinich49.itemtracker.entities.database.extensions.toRequest
+import mx.kinich49.itemtracker.entities.database.models.relationships.CompositeShoppingList
 
 class UploadPendingShoppingListUseCase(private val shoppingListService: ShoppingListService) {
 

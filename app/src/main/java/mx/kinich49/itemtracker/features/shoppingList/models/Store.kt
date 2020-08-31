@@ -9,6 +9,6 @@ data class Store(
 
     companion object {
         fun from(store: mx.kinich49.itemtracker.entities.database.models.Store): Store =
-            Store(store.id, store.name)
+            Store(store.mobileId, store.name)
     }
 }

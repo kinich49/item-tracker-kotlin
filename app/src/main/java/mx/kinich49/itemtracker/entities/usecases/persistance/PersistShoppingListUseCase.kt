@@ -1,12 +1,12 @@
 package mx.kinich49.itemtracker.entities.usecases.persistance
 
+import io.reactivex.Completable
+import mx.kinich49.itemtracker.entities.database.daos.*
 import mx.kinich49.itemtracker.entities.database.models.Item
 import mx.kinich49.itemtracker.entities.database.models.ShoppingList
-import mx.kinich49.itemtracker.entities.database.daos.*
+import mx.kinich49.itemtracker.features.shoppingList.extensions.toDatabaseModel
+import mx.kinich49.itemtracker.features.shoppingList.models.ShoppingItem
 import mx.kinich49.itemtracker.features.shoppingList.models.Store
-import mx.kinich49.itemtracker.features.shoppingList.models.toDatabaseModel
-import io.reactivex.Completable
-import mx.kinich49.itemtracker.features.shoppingList.models.ShoppingItemViewModel
 import java.time.LocalDate
 
 class PersistShoppingListUseCase(
@@ -20,25 +20,28 @@ class PersistShoppingListUseCase(
 
     fun execute(
         store: Store,
-        shoppingItems: List<ShoppingItemViewModel>,
+        shoppingItems: List<ShoppingItem>,
         shoppingDate: LocalDate
     ): Completable {
 
         return Completable.create { emitter ->
-            store.toDatabaseModel()
 
             //get current store id if already exists
             //or insert current store and retrieve id
-            val storeId: Long = store.id ?: store.toDatabaseModel().let {
-                it.state = 1
-                storeDao.insert(it)
+            val storeMobileId = if (store.id == null) {
+                store.toDatabaseModel().let {
+                    it.state = 1
+                    storeDao.insert(it)
+                }
+            } else {
+                store.id!!
             }
 
             //Create new shopping list
             //and get id
-            val shoppingListId: Long = ShoppingList(
+            val shoppingListMobileId: Long = ShoppingList(
                 shoppingDate = shoppingDate,
-                storeId = storeId,
+                storeId = storeMobileId,
                 state = 1
             ).let {
                 shoppingListDao.insert(it)
@@ -50,39 +53,49 @@ class PersistShoppingListUseCase(
                 //or current brand
                 //or new id if brand does not exists in db
                 val brand = it.brandMediator.value
-                val brandId: Long? = brand?.id ?: brand?.toDatabaseModel()?.let { b ->
-                    b.state = 1
-                    brandDao.insert(b)
-                }
+
+                val brandMobileId = if (brand?.id != null)
+                    brand.id
+                else if (brand != null && brand.id == null) {
+                    brand.toDatabaseModel()
+                        .let { b ->
+                            b.state = 1
+                            brandDao.insert(b)
+                        }
+                } else null
 
                 //Get category from mediatorLiveData
                 //Category is mandatory, set current category id
                 //or new id if category does not exists in db
                 val category = it.categoryMediator.value
-                val categoryId: Long =
-                    category?.id ?: category?.toDatabaseModel()!!.let { c ->
+                val categoryMobileId = if (category?.id == null) {
+                    category?.toDatabaseModel()!!.let { c ->
                         c.state = 1
                         categoryDao.insert(c)
                     }
+                } else category.id
 
                 //Get item from mediatorLiveData
                 //Item is mandatory, set current item id
                 //or new id if item does not exits in db
                 val item = it.itemMediator.value
-                val itemId =
-                    item?.id ?: Item(
+                val itemMobileId: Long = if (item?.id == null) {
+                    Item(
                         name = it.itemName.value!!,
-                        brandId = brandId,
-                        categoryId = categoryId,
+                        brandId = brandMobileId,
+                        categoryId = categoryMobileId!!,
                         state = 1
                     )
                         .let { newItem ->
                             newItem.state = 1
                             itemDao.insert(newItem)
                         }
+                } else {
+                    item.id!!
+                }
 
 
-                it.toDatabaseModel(shoppingListId, itemId, 1)
+                it.toDatabaseModel(shoppingListMobileId, itemMobileId, 1)
             }.toTypedArray().let {
                 shoppingItemDao.insert(*it)
             }

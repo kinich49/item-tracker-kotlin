@@ -11,11 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
+import mx.kinich49.itemtracker.R
+import mx.kinich49.itemtracker.databinding.HomeLayoutBinding
 import mx.kinich49.itemtracker.entities.states.DataInitializationState
 import mx.kinich49.itemtracker.entities.states.InProgress
-import mx.kinich49.itemtracker.R
 import mx.kinich49.itemtracker.entities.states.Success
-import mx.kinich49.itemtracker.databinding.HomeLayoutBinding
 import mx.kinich49.itemtracker.features.factories.ItemTrackerViewModelFactory
 
 class HomeFragment(itemTrackerViewModelFactory: ItemTrackerViewModelFactory) : Fragment() {
