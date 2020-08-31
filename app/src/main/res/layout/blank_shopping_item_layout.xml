@@ -37,7 +37,9 @@
                     android:id="@+id/item_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:text="@={shoppingItem.itemName}"
                     app:item="@={shoppingItem.item}" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -59,7 +61,9 @@
                     android:id="@+id/brand_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:text="@={shoppingItem.brandName}"
                     app:item="@={shoppingItem.brand}" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -81,7 +85,9 @@
                     android:id="@+id/category_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:text="@={shoppingItem.categoryName}"
                     app:item="@={shoppingItem.category}" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -103,7 +109,9 @@
                     android:id="@+id/quantity_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
+                    android:maxLines="1"
                     android:text="@={shoppingItem.quantity}" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -125,7 +133,9 @@
                     android:id="@+id/unit_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLines="1"
                     android:text="@{shoppingItem.unit}"
                     app:item="@={shoppingItem.unit}" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -147,7 +157,9 @@
                     android:id="@+id/unit_price_field"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
+                    android:maxLines="1"
                     android:text="@={shoppingItem.unitPrice}" />
             </com.google.android.material.textfield.TextInputLayout>
 
