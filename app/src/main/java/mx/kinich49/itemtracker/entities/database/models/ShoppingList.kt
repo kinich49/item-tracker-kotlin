@@ -11,12 +11,13 @@ import java.time.LocalDate
     foreignKeys = [
         ForeignKey(
             entity = Store::class,
-            parentColumns = arrayOf("id"),
+            parentColumns = arrayOf("mobile_id"),
             childColumns = arrayOf("store_id")
         )]
 )
 data class ShoppingList(
-    @PrimaryKey val id: Long? = null,
+    @PrimaryKey @ColumnInfo(name = "mobile_id") val mobileId: Long? = null,
+    @ColumnInfo(name = "remote_id") val remoteId: Long? = null,
     @ColumnInfo(name = "shopping_date") val shoppingDate: LocalDate,
     @ColumnInfo(name = "store_id") val storeId: Long,
     var state: Int = 0

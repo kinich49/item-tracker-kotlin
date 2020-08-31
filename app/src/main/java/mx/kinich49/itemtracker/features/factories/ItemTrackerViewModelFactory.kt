@@ -3,9 +3,9 @@ package mx.kinich49.itemtracker.features.factories
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.WorkManager
-import mx.kinich49.itemtracker.features.home.HomeViewModel
 import mx.kinich49.itemtracker.entities.apis.services.SchedulerProvider
 import mx.kinich49.itemtracker.entities.usecases.persistance.PersistShoppingListUseCase
+import mx.kinich49.itemtracker.features.home.HomeViewModel
 import mx.kinich49.itemtracker.features.shoppingList.ShoppingListViewModel
 
 class ItemTrackerViewModelFactory(

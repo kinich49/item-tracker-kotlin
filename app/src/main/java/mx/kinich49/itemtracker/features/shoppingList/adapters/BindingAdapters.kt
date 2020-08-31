@@ -9,8 +9,8 @@ import androidx.databinding.InverseBindingListener
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import mx.kinich49.itemtracker.entities.states.DataInitializationState
-import mx.kinich49.itemtracker.features.shoppingList.models.RecyclerItem
 import mx.kinich49.itemtracker.features.shoppingList.models.AutoSuggestView
+import mx.kinich49.itemtracker.features.shoppingList.models.RecyclerItem
 
 @BindingAdapter("items", "recycler_view_lifecycle_owner")
 fun setRecyclerViewItems(

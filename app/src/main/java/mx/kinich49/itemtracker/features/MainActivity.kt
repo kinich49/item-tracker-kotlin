@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.work.WorkManager
-import mx.kinich49.itemtracker.entities.database.ItemTrackerDatabase
 import mx.kinich49.itemtracker.R
-import mx.kinich49.itemtracker.features.factories.ItemTrackerFragmentFactory
 import mx.kinich49.itemtracker.entities.apis.services.SchedulerProvider
-import mx.kinich49.itemtracker.features.factories.ItemTrackerViewModelFactory
+import mx.kinich49.itemtracker.entities.database.ItemTrackerDatabase
 import mx.kinich49.itemtracker.entities.usecases.persistance.PersistShoppingListUseCase
+import mx.kinich49.itemtracker.features.factories.ItemTrackerFragmentFactory
+import mx.kinich49.itemtracker.features.factories.ItemTrackerViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
